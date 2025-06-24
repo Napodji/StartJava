@@ -11,7 +11,7 @@ public class VariableNamesTheme {
         int sum = 1 + 2;
         System.out.println(sum + " - сумма чисел 1 и 2");
 
-        // Произведние цифр
+        // Произведение цифр
         int prod = 5 * 6;
         System.out.println(prod + " - произведение чисел 5 и 6");
 
@@ -92,8 +92,8 @@ public class VariableNamesTheme {
         System.out.println(workerOfMonthName + " - имя работника месяца");
 
         // Название электронной книги
-        String bookTitle = "Изучаем Java";
-        System.out.println(bookTitle + " - название электронной книги");
+        String ebookTitle = "Изучаем Java";
+        System.out.println(ebookTitle + " - название электронной книги");
 
         // Размер
         int size = 9;
