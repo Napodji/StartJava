@@ -20,6 +20,7 @@ public class VariablesTheme {
                 J  J  /      \\  V V  aaaaa
                  JJ  /___/\\___\\  V  a     a
                 """;
+ 
         System.out.println(picture);
 
         System.out.println("\n2.РАСЧЕТ СТОИМОСТИ ТОВАРА");
@@ -36,9 +37,9 @@ public class VariablesTheme {
         BigDecimal penPriceBd = new BigDecimal("105.5");
         BigDecimal bookPriceBd = new BigDecimal("235.23");
         BigDecimal discountBd = new BigDecimal("0.89");
-        BigDecimal priceBd = penPriceBd.add(bookPriceBd).setScale(2, BigDecimal.ROUND_CEILING);
-        BigDecimal finalPriceBd = priceBd.multiply(discountBd).setScale(2, BigDecimal.ROUND_CEILING);
-        BigDecimal discountAmountBd = priceBd.subtract(finalPriceBd).setScale(2, BigDecimal.ROUND_CEILING);
+        BigDecimal priceBd = penPriceBd.add(bookPriceBd).setScale(2, BigDecimal.ROUND_HALF_UP);
+        BigDecimal finalPriceBd = priceBd.multiply(discountBd).setScale(2, BigDecimal.ROUND_HALF_UP);
+        BigDecimal discountAmountBd = priceBd.subtract(finalPriceBd).setScale(2, BigDecimal.ROUND_HALF_UP);
         System.out.println(priceBd + " - стоимость товаров без скидки");
         System.out.println(discountAmountBd + " - сумма скидки");
         System.out.println(finalPriceBd + " - стоимость товаров со скидкой");
