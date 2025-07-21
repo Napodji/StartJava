@@ -1,4 +1,5 @@
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
@@ -33,13 +34,12 @@ public class VariablesTheme {
         System.out.println(price + " - стоимость товаров без скидки");
         System.out.println(discountAmount + " - сумма скидки");
         System.out.println(finalPrice + " - стоимость товаров со скидкой\n");
-
         BigDecimal penPriceBd = new BigDecimal("105.5");
         BigDecimal bookPriceBd = new BigDecimal("235.23");
         BigDecimal discountBd = new BigDecimal("0.89");
-        BigDecimal priceBd = penPriceBd.add(bookPriceBd).setScale(2, BigDecimal.ROUND_HALF_UP);
-        BigDecimal finalPriceBd = priceBd.multiply(discountBd).setScale(2, BigDecimal.ROUND_HALF_UP);
-        BigDecimal discountAmountBd = priceBd.subtract(finalPriceBd).setScale(2, BigDecimal.ROUND_HALF_UP);
+        BigDecimal priceBd = penPriceBd.add(bookPriceBd).setScale(2, RoundingMode.HALF_DOWN);
+        BigDecimal finalPriceBd = priceBd.multiply(discountBd).setScale(2, RoundingMode.HALF_DOWN);
+        BigDecimal discountAmountBd = priceBd.subtract(finalPriceBd).setScale(2, RoundingMode.HALF_DOWN);
         System.out.println(priceBd + " - стоимость товаров без скидки");
         System.out.println(discountAmountBd + " - сумма скидки");
         System.out.println(finalPriceBd + " - стоимость товаров со скидкой");
