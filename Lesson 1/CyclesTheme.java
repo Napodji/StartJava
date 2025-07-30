@@ -134,24 +134,26 @@ public class CyclesTheme {
         boolean hasLower = false;
         boolean hasDigit = false;
         boolean hasSpecial = false;
+        int MIN = 33;
+        int MAX = 126;
+        int ch = 0;
         for (int i = 0; i < 8; i++) {
-            int charType = random.nextInt(4);
-            int ch;
-            if (charType == 0) {
-                ch = random.nextInt('a', 'z' + 1);
-                hasLower = Character.isLowerCase((char) ch);
-            } else if (charType == 1) {
-                ch = random.nextInt('A', 'Z' + 1);
-                hasUpper = Character.isUpperCase((char) ch);
-            } else if (charType == 2) {
-                ch = random.nextInt('0', '9' + 1);
-                hasDigit = Character.isDigit((char) ch);
-            } else {
-                ch = random.nextInt('!', '/' + 1);
-                hasSpecial = !Character.isLetterOrDigit((char) ch);
+            ch = random.nextInt(MIN, MAX + 1);
+            if (ch >= 'a' && ch <= 'z') {
+                password += (char) ch;
+                hasLower = true;
+            } else if (ch >= 'A' && ch <= 'Z') {
+                password += (char) ch;
+                hasUpper = true;
+            } else if (ch >= '0' && ch <= '9') {
+                password += (char) ch;
+                hasDigit = true;
+            } else if (ch >= '!' && ch <= '/') {
+                password += (char) ch;
+                hasSpecial = true;
             }
-            password += (char) ch;
         }
+        password += (char) ch;
         String reliability;
         if (password.length() >= 8 && hasUpper && hasLower && hasSpecial) {
             reliability = "надежный";

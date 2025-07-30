@@ -10,29 +10,22 @@ public class Calculator {
         System.out.println("Введите второе число: ");
         int b = scanner.nextInt();
         long result = 0;
-        String operationStr = "";
         if (operation == '+') {
             result = a + b;
-            operationStr = "+";
         } else if (operation == '-') {
             result = a - b;
-            operationStr = "-";
         } else if (operation == '*') {
             result = a * b;
-            operationStr = "*";
         } else if (operation == '/') {
             result = a / b;
-            operationStr = "/";
         } else if (operation == '^') {
             result = 1;
             for (int i = 0; i < b; i++) {
                 result *= a;
             }
-            operationStr = "^";
         } else {
             result = a % b;
-            operationStr = "%";
         }
-        System.out.println(a + " " + operationStr + " " + b + " = " + result);
+        System.out.println(a + " " + operation + " " + b + " = " + result);
     }
 }
