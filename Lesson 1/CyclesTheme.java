@@ -134,33 +134,26 @@ public class CyclesTheme {
         boolean hasLower = false;
         boolean hasDigit = false;
         boolean hasSpecial = false;
-        int MIN = 33;
-        int MAX = 126;
-        int ch = 0;
+        int minNum = 33;
+        int maxNum = 127;
         for (int i = 0; i < 8; i++) {
-            ch = random.nextInt(MIN, MAX + 1);
+            int ch = random.nextInt(minNum, maxNum);
+            password += (char) ch;
             if (ch >= 'a' && ch <= 'z') {
-                password += (char) ch;
                 hasLower = true;
             } else if (ch >= 'A' && ch <= 'Z') {
-                password += (char) ch;
                 hasUpper = true;
             } else if (ch >= '0' && ch <= '9') {
-                password += (char) ch;
                 hasDigit = true;
             } else if (ch >= '!' && ch <= '/') {
-                password += (char) ch;
                 hasSpecial = true;
             }
         }
-        password += (char) ch;
-        String reliability;
+        String reliability = "Слабый";
         if (password.length() >= 8 && hasUpper && hasLower && hasSpecial) {
-            reliability = "надежный";
+            reliability = "Надежный";
         } else if (password.length() >= 8 && (hasUpper || hasDigit)) {
             reliability = "Средний";
-        } else {
-            reliability = "Слабый";
         }
         System.out.println("Пароль: " + password);
         System.out.println("Надежность: " + reliability);
