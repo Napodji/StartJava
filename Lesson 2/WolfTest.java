@@ -4,18 +4,14 @@ public class WolfTest {
 
         wolf.setNickname("Фенрир");
         wolf.setGender("мужской");
-        wolf.setWeight(4000);
-        wolf.setAge(10000);
+        wolf.setWeight(40);
+        wolf.setAge(5);
         wolf.setColor("Черный");
 
         System.out.println("Кличка - " + wolf.getNickname());
         System.out.println("Пол - " + wolf.getGender());
         System.out.println("Вес - " + wolf.getWeight() + " кг");
-        if ("Фенрир".equals(wolf.getNickname())) {
-            System.out.println("Возраст - " + wolf.getAge() + " лет" + ", Фенрир очень древний!");
-        } else {
-            System.out.println("Возраст - " + wolf.getAge() + " лет");
-        }
+        System.out.println("Возраст - " + wolf.getAge() + " лет");
         System.out.println("Окрас - " + wolf.getColor());
 
         wolf.walk();

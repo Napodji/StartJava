@@ -1,45 +1,39 @@
 public class Calculator {
     public long calculate(long a, char operation, long b) {
-        long result = 0;
-
         switch (operation) {
             case '+':
-                result = a + b;
-                break;
+                return a + b;
             case '-':
-                result = a - b;
-                break;
+                return a - b;
             case '*':
-                result = a * b;
-                break;
+                return a * b;
             case '/':
                 if (b == 0) {
                     System.out.println("Деление на ноль запрещено!");
                     return 0;
                 }
-                result = a / b;
-                break;
+                return a / b;
             case '^':
-                if (b >= 0) {
-                    result = 1;
-                    for (int i = 0; i < b; i++) {
-                        result *= a;
-                    }
-                } else {
-                    result = 1;
-                    for (int i = 0; i < -b; i++) {
-                        result *= a;
-                    }
-                    result = 1 / result;
+                if (b == 0) return 1;
+
+                long result = 1;
+                long exponent = Math.abs(b);
+
+                for (int i = 0; i < exponent; i++) {
+                    result *= a;
                 }
-                break;
+
+                return b < 0 ? 1 / result : result;
             case '%':
-                result = a % b;
-                break;
+                if (b == 0) {
+                    System.out.println("Деление на ноль запрещено!");
+                    return 0;
+                }
+                return a % b;
             default:
-                System.out.println("Данная " + operation + " невозможна!");
+                System.out.println("Операция '" + operation + "' не поддерживается!");
                 return 0;
         }
-        return result;
     }
 }
+

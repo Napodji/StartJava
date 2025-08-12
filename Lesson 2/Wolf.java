@@ -26,7 +26,7 @@ public class Wolf {
     }
 
     public void setWeight(double weight) {
-        this.weight = weight;
+        this.weight = weight; // Убрали проверку веса
     }
 
     public int getAge() {
@@ -34,17 +34,12 @@ public class Wolf {
     }
 
     public void setAge(int age) {
-        if ("Фенрир".equals(this.nickname)) {
+        if (age > 0 && age <= 8) {
             this.age = age;
         } else {
-            if (age > 8) {
-                System.out.println("Некорректный возраст");
-            } else {
-                this.age = age;
-            }
+            System.out.println("Некорректный возраст");
         }
     }
-
 
     public String getColor() {
         return color;
