@@ -10,8 +10,8 @@ public class Jaeger {
 
     public Jaeger() {}
 
-    public Jaeger(String name, int mark, float height, float weight, int speed, int strength, int armor,
-                  int kaijuKillCounter) {
+    public Jaeger(String name, int mark, float height, float weight,
+                  int speed, int strength, int armor, int kaijuKillCounter) {
         this.name = name;
         this.mark = mark;
         this.height = height;
@@ -54,29 +54,6 @@ public class Jaeger {
         this.kaijuKillCounter = kaijuKillCounter;
     }
 
-    public void showStats() {
-        System.out.println("""
-        
-        Данные робота:
-        Имя:        %s
-        Поколение:       %d
-        Высота:        %.1f метров
-        Масса:         %.1f тонн
-        Скорость:    %d
-        Сила:        %d
-        Броня:       %d
-        Уничтожено кайдзю: %d
-                """.formatted(
-                name,
-                mark,
-                height,
-                weight,
-                speed,
-                strength,
-                armor,
-                kaijuKillCounter
-        ));
-    }
 
     public void drift() {
         System.out.println("Пилоты егеря " + name + " вошли в дрифт");
@@ -88,5 +65,28 @@ public class Jaeger {
 
     public void attackKaiju() {
         System.out.println("Jaeger " + name + " атакует кайдзю!");
+    }
+
+    public String toString() {
+        return """
+        Данные робота:
+        Имя: %s
+        Поколение: %d
+        Высота: %.1f метров
+        Масса: %.1f тонн
+        Скорость: %d
+        Сила: %d
+        Броня: %d
+        Уничтожено кайдзю: %d
+        """.formatted(
+                name,
+                mark,
+                height,
+                weight,
+                speed,
+                strength,
+                armor,
+                kaijuKillCounter
+        );
     }
 }

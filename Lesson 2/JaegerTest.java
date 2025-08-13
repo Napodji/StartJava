@@ -21,12 +21,13 @@ public class JaegerTest {
                 9,
                 11
         );
-        chernoAlpha.showStats();
+
+        System.out.print(chernoAlpha);
         chernoAlpha.drift();
         chernoAlpha.scanKaiju();
         chernoAlpha.attackKaiju();
-
-        strikeEureka.showStats();
+        System.out.println();
+        System.out.print(strikeEureka);
         strikeEureka.drift();
         strikeEureka.scanKaiju();
         strikeEureka.attackKaiju();
