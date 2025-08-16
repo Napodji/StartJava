@@ -54,7 +54,6 @@ public class Jaeger {
         this.kaijuKillCounter = kaijuKillCounter;
     }
 
-
     public void drift() {
         System.out.println("Пилоты егеря " + name + " вошли в дрифт");
     }
@@ -69,24 +68,15 @@ public class Jaeger {
 
     public String toString() {
         return """
-        Данные робота:
-        Имя: %s
-        Поколение: %d
-        Высота: %.1f метров
-        Масса: %.1f тонн
-        Скорость: %d
-        Сила: %d
-        Броня: %d
-        Уничтожено кайдзю: %d
-        """.formatted(
-                name,
-                mark,
-                height,
-                weight,
-                speed,
-                strength,
-                armor,
-                kaijuKillCounter
-        );
+            Данные робота:
+            Имя: %s
+            Поколение: %d
+            Высота: %.1f метров
+            Масса: %.1f тонн
+            Скорость: %d
+            Сила: %d
+            Броня: %d
+            Уничтожено кайдзю: %d
+            """.formatted(name, mark, height, weight, speed, strength, armor, kaijuKillCounter);
     }
 }
