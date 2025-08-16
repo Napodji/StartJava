@@ -12,13 +12,12 @@ public class GuessNumberTest {
 
             System.out.println("Введите имя второго игрока: ");
             String name2 = scanner.nextLine();
-            Player player2 = new Player(name2);;
+            Player player2 = new Player(name2);
 
             GuessNumber game = new GuessNumber(player1, player2);
 
-            System.out.println("\n Начинаем игру");
-            game.startGame();
-            System.out.println("Игра окончена! \n");
+            System.out.println("\nНачинаем игру");
+            game.start(scanner);
 
             boolean validInput = false;
             String response;
