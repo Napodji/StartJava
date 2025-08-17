@@ -15,6 +15,19 @@ public class GuessNumber {
         this.guessNumber = (int) (Math.random() * 100) + 1;
     }
 
+    private String checkGuess(int guess) {
+
+        if (guess == guessNumber) {
+            return "Игрок угадал число!";
+        }
+
+        if (guess < guessNumber) {
+            return "Число больше!";
+        }
+
+        return "Число меньше!";
+    }
+
     public void start(Scanner scanner) {
         Player currentPlayer = player1;
 
@@ -24,13 +37,11 @@ public class GuessNumber {
             String input = scanner.nextLine();
             int guess = Integer.parseInt(input);
 
-            if (guess == guessNumber) {
-                System.out.println("Игрок " + currentPlayer.getName() + " угадал число!");
+            String result = checkGuess(guess);
+            System.out.println(result);
+
+            if (result.equals("Игрок угадал число!")) {
                 break;
-            } else if (guess < guessNumber) {
-                System.out.println("Число больше!");
-            } else {
-                System.out.println("Число меньше!");
             }
 
             currentPlayer = (currentPlayer == player1) ? player2 : player1;

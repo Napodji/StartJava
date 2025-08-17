@@ -3,9 +3,9 @@ import java.util.Scanner;
 public class GuessNumberTest {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        boolean play = true;
 
-        while (play) {
+        String response;
+        do {
             System.out.println("Введите имя первого игрока: ");
             String name1 = scanner.nextLine();
             Player player1 = new Player(name1);
@@ -19,23 +19,17 @@ public class GuessNumberTest {
             System.out.println("\nНачинаем игру");
             game.start(scanner);
 
-            boolean validInput = false;
-            String response;
-
-            while (!validInput) {
+            do {
                 System.out.println("Сыграем еще? (yes/no)");
                 response = scanner.nextLine().toLowerCase();
-                if (response.equals("yes")) {
-                    play = true;
-                    validInput = true;
-                } else if (response.equals("no")) {
-                    play = false;
-                    validInput = true;
-                } else {
+
+                if (!response.equals("yes") && !response.equals("no")) {
                     System.out.println("Неверный ввод, повторите!");
                 }
-            }
-        }
+            } while (!response.equals("yes") && !response.equals("no"));
+
+        } while (response.equals("yes"));
+
         scanner.close();
     }
 }
