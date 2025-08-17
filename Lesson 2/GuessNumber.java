@@ -16,7 +16,6 @@ public class GuessNumber {
     }
 
     private String checkGuess(int guess) {
-
         if (guess == guessNumber) {
             return "Игрок угадал число!";
         }
