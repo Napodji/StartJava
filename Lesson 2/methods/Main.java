@@ -1,7 +1,7 @@
 package methods;
 
 public class Main {
-    public static void main(String args) {
+    public static void main(String[] args) {
         MethodName methodInfo = new MethodName();
         System.out.println("Текущий метод: " + methodInfo.getCurrent());
 
