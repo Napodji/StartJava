@@ -1,7 +1,7 @@
 package methods;
 
-public class MethodName {
-    public static String getCurrentMethodName() {
+class MethodName {
+    public String getCurrent() {
         return Thread.currentThread().getStackTrace()[2].getMethodName();
     }
 }

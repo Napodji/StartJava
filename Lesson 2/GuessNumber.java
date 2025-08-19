@@ -11,22 +11,6 @@ public class GuessNumber {
         generateRandomNumber();
     }
 
-    private void generateRandomNumber() {
-        this.guessNumber = (int) (Math.random() * 100) + 1;
-    }
-
-    private String checkGuess(int guess) {
-        if (guess == guessNumber) {
-            return "Игрок угадал число!";
-        }
-
-        if (guess < guessNumber) {
-            return "Число больше!";
-        }
-
-        return "Число меньше!";
-    }
-
     public void start(Scanner scanner) {
         Player currentPlayer = player1;
 
@@ -36,14 +20,32 @@ public class GuessNumber {
             String input = scanner.nextLine();
             int guess = Integer.parseInt(input);
 
-            String result = checkGuess(guess);
-            System.out.println(result);
+            boolean isCorrect = checkGuess(guess);
 
-            if (result.equals("Игрок угадал число!")) {
+            if (isCorrect) {
                 break;
             }
 
             currentPlayer = (currentPlayer == player1) ? player2 : player1;
         } while (true);
+    }
+
+    private boolean checkGuess(int guess) {
+        if (guess == guessNumber) {
+            System.out.println("Игрок угадал число!");
+            return true;
+        }
+
+        if (guess < guessNumber) {
+            System.out.println("Число больше!");
+        } else {
+            System.out.println("Число меньше!");
+        }
+
+        return false;
+    }
+
+    private void generateRandomNumber() {
+        this.guessNumber = (int) (Math.random() * 100) + 1;
     }
 }

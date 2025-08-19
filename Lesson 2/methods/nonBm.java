@@ -1,6 +1,6 @@
 package methods;
 
-public class NotBooleanMethods {
+public class nonBm {
     public void findLongestWord() {
         System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName() +
                 "() -> поиск самого длинного слова в предложении");
@@ -71,4 +71,3 @@ public class NotBooleanMethods {
                 "() -> поиск книг по автору");
     }
 }
-
