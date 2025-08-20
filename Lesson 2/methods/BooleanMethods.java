@@ -41,12 +41,12 @@ public class BooleanMethods {
         return true;
     }
 
-    public boolean doesFileExist() {
+    public boolean isFileExist() {
         System.out.print(MethodName.current() + "() -> файл существует? ");
         return false;
     }
 
-    public boolean doesEmailExist() {
+    public boolean isEmailExist() {
         System.out.print(MethodName.current() + "() -> email существует? ");
         return false;
     }

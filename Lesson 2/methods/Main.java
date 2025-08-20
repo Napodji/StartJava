@@ -40,7 +40,7 @@ public class Main {
         System.out.println(instance.isLetter());
         System.out.println(instance.isEvenDiceRoll());
         System.out.println(instance.isValidPath());
-        System.out.println(instance.doesFileExist());
-        System.out.println(instance.doesEmailExist());
+        System.out.println(instance.isFileExist());
+        System.out.println(instance.isEmailExist());
     }
 }
