@@ -1,3 +1,5 @@
+package robot;
+
 public class JaegerTest {
     public static void main(String[] args) {
         Jaeger chernoAlpha = new Jaeger();

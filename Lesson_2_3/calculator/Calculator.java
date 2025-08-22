@@ -1,3 +1,5 @@
+package calculator;
+
 public class Calculator {
     public long calculate(long a, char operation, long b) {
         switch (operation) {

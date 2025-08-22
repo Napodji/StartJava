@@ -1,4 +1,4 @@
-package method;
+package method.naming;
 
 public class MethodName {
     public static String current() {

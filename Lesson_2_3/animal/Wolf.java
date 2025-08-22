@@ -1,3 +1,5 @@
+package animal;
+
 public class Wolf {
     private String gender;
     private String nickname;

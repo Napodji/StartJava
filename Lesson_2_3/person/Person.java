@@ -1,3 +1,5 @@
+package person;
+
 public class Person {
     String gender = "male";
     String name = "Aleks";

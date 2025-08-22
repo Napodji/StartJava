@@ -1,3 +1,5 @@
+package robot;
+
 public class Jaeger {
     private String name;
     private int mark;
@@ -59,11 +61,11 @@ public class Jaeger {
     }
 
     public void scanKaiju() {
-        System.out.println("Jaeger " + name + " сканирует местность в поисках кайдзю!");
+        System.out.println("robot.Jaeger " + name + " сканирует местность в поисках кайдзю!");
     }
 
     public void attackKaiju() {
-        System.out.println("Jaeger " + name + " атакует кайдзю!");
+        System.out.println("robot.Jaeger " + name + " атакует кайдзю!");
     }
 
     public String toString() {
