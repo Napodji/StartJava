@@ -1,4 +1,4 @@
-package methods;
+package method;
 
 public class MethodName {
     public static String current() {

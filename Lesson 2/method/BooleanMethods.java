@@ -1,4 +1,4 @@
-package methods;
+package method;
 
 public class BooleanMethods {
     public boolean isProgramRunning() {

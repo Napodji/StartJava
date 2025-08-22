@@ -1,4 +1,4 @@
-package methods;
+package method;
 
 public class NonBooleanMethods {
     public void findLongestWord() {
