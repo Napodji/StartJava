@@ -1,7 +1,5 @@
 package calculator;
 
-import final_.Calculator;
-
 import java.util.Scanner;
 
 public class CalculatorTest {
