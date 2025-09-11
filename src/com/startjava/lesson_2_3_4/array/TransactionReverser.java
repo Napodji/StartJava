@@ -4,15 +4,16 @@ import java.util.Arrays;
 
 public class TransactionReverser {
     public static void main(String[] args) {
-        int[][] data = {
+        int[][] originalTransactions = {
                 {},
                 null,
                 {5},
                 {6, 8, 9, 1},
                 {13, 8, 5, 3, 2, 1}
         };
-        for (int[] transactions : data) {
-            transactionInfo(transactions);
+
+        for (int[] transactions : originalTransactions) {
+            printTransactionInfo(transactions);
         }
     }
 
@@ -22,21 +23,24 @@ public class TransactionReverser {
         }
 
         int length = transactions.length;
-        int[] reverseTransactions = new int[length];
+        int[] reversedTransactions = new int[length];
 
         for (int i = 0; i < length; i++) {
-            reverseTransactions[i] = transactions[length - 1 - i];
+            reversedTransactions[i] = transactions[length - 1 - i];
         }
 
-        return reverseTransactions;
+        return reversedTransactions;
     }
 
-    private static void transactionInfo(int[] transactions) {
-        String original = Arrays.toString(transactions);
-        String reversed = Arrays.toString(reverseTransactions(transactions));
+    private static void printTransactionInfo(int[] transactions) {
+        System.out.println("Исходные транзакции: " + Arrays.toString(transactions));
 
-        System.out.println("Исходные транзакции: " + original);
-        System.out.println(" В обратном порядке: " + reversed);
+        if (transactions != null) {
+            System.out.println(" В обратном порядке: " + Arrays.toString(reverseTransactions(transactions)));
+        } else {
+            System.out.println(" В обратном порядке: null");
+        }
+
         System.out.println();
     }
 }
