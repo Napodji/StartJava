@@ -12,14 +12,9 @@ public class TransactionReverser {
                 {13, 8, 5, 3, 2, 1}
         };
 
-        int[][] reversedResults = new int[originalTransactions.length][];
-
-        for (int i = 0; i < originalTransactions.length; i++) {
-            reversedResults[i] = reverseTransactions(originalTransactions[i]);
-        }
-
-        for (int i = 0; i < originalTransactions.length; i++) {
-            printTransactionInfo(originalTransactions[i], reversedResults[i]);
+        for (int[] transactions : originalTransactions) {
+            int[] reversed = reverseTransactions(transactions);
+            printTransactions(transactions, reversed);
         }
     }
 
@@ -31,14 +26,14 @@ public class TransactionReverser {
         int length = transactions.length;
         int[] reversedTransactions = new int[length];
 
-        for (int i = 0; i < length; i++) {
-            reversedTransactions[i] = transactions[length - 1 - i];
+        for (int value : transactions) {
+            reversedTransactions[--length] = value;
         }
 
         return reversedTransactions;
     }
 
-    private static void printTransactionInfo(int[] original, int[] reversed) {
+    private static void printTransactions(int[] original, int[] reversed) {
         System.out.println("Исходные транзакции: " + Arrays.toString(original));
 
         if (reversed != null) {
