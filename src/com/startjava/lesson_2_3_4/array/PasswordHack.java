@@ -2,33 +2,30 @@ package com.startjava.lesson_2_3_4.array;
 
 public class PasswordHack {
     public static void main(String[] args) throws InterruptedException {
-        boolean result = processHacking();
-        displayResult(result);
+        boolean result = hack();
+        showAccessMessage(result);
     }
 
-    private static boolean processHacking() throws InterruptedException {
-        char[] spinnerSymbols = {'-', '\\', '|', '/'};
+    private static boolean hack() throws InterruptedException {
+        char[] spins = {'-', '\\', '|', '/'};
         final int rotations = 3;
 
-        System.out.print("Hacking...");
+        System.out.print("Hacking:....");
 
-        for (int i = 0; i < rotations * spinnerSymbols.length; i++) {
-            char symbol = spinnerSymbols[i % spinnerSymbols.length];
+        for (int i = 0; i < rotations * spins.length; i++) {
+            char symbol = spins[i % spins.length];
             System.out.print("\b" + symbol);
             Thread.sleep(150);
         }
 
-        int number = (int) (Math.random() * 100);
-        System.out.print("\b");
-
-        return number > 70;
+        return (int) (Math.random() * 100) > 70;
     }
 
-    private static void displayResult(boolean success) {
-        if (success) {
-            System.out.println("\u001B[32mAccess Granted!\u001B[0m");
-        } else {
-            System.out.println("\u001B[31mAccess Denied!\u001B[0m");
-        }
+    private static void showAccessMessage(boolean success) {
+        String message = success
+                ? "\u001B[32mAccess Granted!\u001B[0m"
+                : "\u001B[31mAccess Denied!\u001B[0m";
+
+        System.out.println(message);
     }
 }
