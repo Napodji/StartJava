@@ -10,7 +10,7 @@ public class PasswordHack {
         char[] spins = {'-', '\\', '|', '/'};
         final int rotations = 3;
 
-        System.out.print("Hacking:....");
+        System.out.print("Hacking: ");
 
         for (int i = 0; i < rotations * spins.length; i++) {
             char symbol = spins[i % spins.length];
@@ -22,10 +22,9 @@ public class PasswordHack {
     }
 
     private static void showAccessMessage(boolean success) {
-        String message = success
-                ? "\u001B[32mAccess Granted!\u001B[0m"
-                : "\u001B[31mAccess Denied!\u001B[0m";
+        String color = success ? "\u001B[32m" : "\u001B[31m";
+        String messageText = success ? "Access Granted!" : "Access Denied!";
 
-        System.out.println(message);
+        System.out.println(color + messageText + "\u001B[0m");
     }
 }
