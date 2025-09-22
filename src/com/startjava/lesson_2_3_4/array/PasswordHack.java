@@ -17,6 +17,7 @@ public class PasswordHack {
             System.out.print("\b" + symbol);
             Thread.sleep(150);
         }
+        System.out.print("\b ");
 
         return (int) (Math.random() * 100) > 70;
     }
