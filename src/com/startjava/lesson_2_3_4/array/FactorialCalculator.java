@@ -34,13 +34,9 @@ public class FactorialCalculator {
             factorials[i] = fact.orElse(-1L);
             if (factorials[i] == -1L) {
                 if (number < 0) {
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("Ошибка: факториал ").append(number).append("! не определён");
-                    System.out.println(sb);
+                    System.out.println("Ошибка: факториал " + number + "! не определён");
                 } else if (number > 20) {
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("Ошибка: факториал ").append(number).append("! слишком велик (максимум 20!)");
-                    System.out.println(sb);
+                    System.out.println("Ошибка: факториал " + number + "! слишком велик (максимум 20!)");
                 }
             }
         }
@@ -49,15 +45,11 @@ public class FactorialCalculator {
 
     private static OptionalLong calculateFactorial(int n) {
         if (n < 0) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("Ошибка: факториал ").append(n).append("! не определён");
-            System.out.println(sb);
+            System.out.println("Ошибка: факториал " + n + "! не определён");
             return OptionalLong.empty();
         }
         if (n > 20) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("Ошибка: факториал ").append(n).append("! слишком велик (максимум 20!)");
-            System.out.println(sb);
+            System.out.println("Ошибка: факториал " + n + "! слишком велик (максимум 20!)");
             return OptionalLong.empty();
         }
         long factorial = 1L;
