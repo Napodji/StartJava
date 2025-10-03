@@ -3,59 +3,84 @@ package com.startjava.lesson_2_3_4.array;
 import java.util.Random;
 
 public class ThresholdArrayModifier {
-    private static final int capacity = 15;
+    private static final int CAPACITY = 15;
 
     public static void main(String[] args) {
         float[] numbers = generateRandomNumbers();
-        displayArray("Исходный массив:", numbers);
-
         int[] testIndices = {-1, 15, 0, 14};
-        processThresholds(numbers, testIndices);
+
+        String[][] results = processIndices(numbers, testIndices);
+        displayResults(results);
     }
 
-    private static void processThresholds(float[] numbers, int[] indicesToCheck) {
-        for (int index : indicesToCheck) {
-            if (index < 0 || index >= capacity) {
-                System.out.printf("Ошибка: введен некорректный индекс %d. Допустимый диапазон: 0 - %d%n", index, capacity - 1);
-                continue;
-            }
-            float threshold = numbers[index];
-            System.out.printf("Значение порога из ячейки с индексом %d: %.3f%n", index, threshold);
+    private static String[][] processIndices(float[] numbers, int[] indices) {
+        String[][] results = new String[indices.length][];
 
-            float[] processed = replaceValuesAboveThreshold(numbers, threshold);
-            displayArray("Обработанный массив:", processed);
+        for (int i = 0; i < indices.length; i++) {
+            int index = indices[i];
+            if (index < 0 || index >= CAPACITY) {
+                results[i] = new String[]{"ERROR", String.valueOf(index)};
+            } else {
+                float threshold = numbers[index];
+                float[] replaced = replaceValuesAboveThreshold(numbers, threshold);
+                results[i] = new String[]{
+                        "SUCCESS",
+                        String.valueOf(index),
+                        String.valueOf(threshold),
+                        formatArray(numbers),
+                        formatArray(replaced)
+                };
+            }
+        }
+        return results;
+    }
+
+    private static void displayResults(String[][] results) {
+        for (String[] result : results) {
+            if (result[0].equals("ERROR")) {
+                System.out.printf("Ошибка: значение индекса (%s) должно быть от 0 до %d%n%n",
+                        result[1], CAPACITY - 1);
+            } else {
+                System.out.printf("Значение из ячейки [%s]: %s%n", result[1], result[2]);
+                System.out.println("До обнуления:");
+                System.out.println(result[3]);
+                System.out.println("После обнуления:");
+                System.out.println(result[4]);
+                System.out.println();
+            }
         }
     }
 
     private static float[] generateRandomNumbers() {
         Random random = new Random();
-        float[] numbers = new float[capacity];
-        for (int i = 0; i < capacity; i++) {
+        float[] numbers = new float[CAPACITY];
+        for (int i = 0; i < CAPACITY; i++) {
             numbers[i] = random.nextFloat();
         }
         return numbers;
     }
 
     private static float[] replaceValuesAboveThreshold(float[] source, float threshold) {
-        float[] result = new float[capacity];
-        for (int i = 0; i < capacity; i++) {
+        float[] result = new float[CAPACITY];
+        for (int i = 0; i < CAPACITY; i++) {
             result[i] = source[i] > threshold ? 0.0f : source[i];
         }
         return result;
     }
 
-    private static void displayArray(String header, float[] numbers) {
-        System.out.println(header);
+    private static String formatArray(float[] numbers) {
+        StringBuilder sb = new StringBuilder();
         int count = 0;
         for (float number : numbers) {
-            System.out.printf("%.3f ", number);
+            sb.append(String.format("%.3f ", number));
             count++;
             if (count % 8 == 0) {
-                System.out.println();
+                sb.append("\n");
             }
         }
         if (count % 8 != 0) {
-            System.out.println();
+            sb.append("\n");
         }
+        return sb.toString();
     }
 }
