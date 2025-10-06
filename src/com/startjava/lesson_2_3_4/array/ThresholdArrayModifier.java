@@ -4,50 +4,58 @@ import java.util.Random;
 
 public class ThresholdArrayModifier {
     private static final int CAPACITY = 15;
+    private static final int NUMBERS_PER_ROW = 8;
 
     public static void main(String[] args) {
-        float[] numbers = generateRandomNumbers();
+        float[] original = generateRandomNumbers();
         int[] testIndices = {-1, 15, 0, 14};
 
-        String[][] results = processIndices(numbers, testIndices);
-        displayResults(results);
-    }
-
-    private static String[][] processIndices(float[] numbers, int[] indices) {
-        String[][] results = new String[indices.length][];
-
-        for (int i = 0; i < indices.length; i++) {
-            int index = indices[i];
-            if (index < 0 || index >= CAPACITY) {
-                results[i] = new String[]{"ERROR", String.valueOf(index)};
-            } else {
-                float threshold = numbers[index];
-                float[] replaced = replaceValuesAboveThreshold(numbers, threshold);
-                results[i] = new String[]{
-                        "SUCCESS",
-                        String.valueOf(index),
-                        String.valueOf(threshold),
-                        formatArray(numbers),
-                        formatArray(replaced)
-                };
-            }
+        for (int index : testIndices) {
+            float[] modified = filterAboveIndexValue(original, index);
+            printArraysWithIndexValue(original, modified, index);
         }
-        return results;
     }
 
-    private static void displayResults(String[][] results) {
-        for (String[] result : results) {
-            if (result[0].equals("ERROR")) {
-                System.out.printf("Ошибка: значение индекса (%s) должно быть от 0 до %d%n%n",
-                        result[1], CAPACITY - 1);
-            } else {
-                System.out.printf("Значение из ячейки [%s]: %s%n", result[1], result[2]);
-                System.out.println("До обнуления:");
-                System.out.println(result[3]);
-                System.out.println("После обнуления:");
-                System.out.println(result[4]);
+    private static float[] filterAboveIndexValue(float[] source, int index) {
+        if (index < 0 || index >= CAPACITY) {
+            System.out.printf("Ошибка: значение индекса (%d) должно быть от 0 до %d%n%n",
+                    index, CAPACITY - 1);
+            return null;
+        }
+
+        float threshold = source[index];
+        float[] result = new float[CAPACITY];
+
+        for (int i = 0; i < CAPACITY; i++) {
+            result[i] = source[i] > threshold ? 0.0f : source[i];
+        }
+
+        return result;
+    }
+
+    private static void printArraysWithIndexValue(float[] original, float[] modified, int index) {
+        if (modified == null) {
+            return;
+        }
+
+        float threshold = original[index];
+        System.out.printf("Значение из ячейки [%d]: %.3f%n", index, threshold);
+        System.out.println("До обнуления:");
+        printArray(original);
+        System.out.println("После обнуления:");
+        printArray(modified);
+        System.out.println();
+    }
+
+    private static void printArray(float[] numbers) {
+        for (int i = 0; i < numbers.length; i++) {
+            System.out.printf("%.3f ", numbers[i]);
+            if ((i + 1) % NUMBERS_PER_ROW == 0) {
                 System.out.println();
             }
+        }
+        if (numbers.length % NUMBERS_PER_ROW != 0) {
+            System.out.println();
         }
     }
 
@@ -58,29 +66,5 @@ public class ThresholdArrayModifier {
             numbers[i] = random.nextFloat();
         }
         return numbers;
-    }
-
-    private static float[] replaceValuesAboveThreshold(float[] source, float threshold) {
-        float[] result = new float[CAPACITY];
-        for (int i = 0; i < CAPACITY; i++) {
-            result[i] = source[i] > threshold ? 0.0f : source[i];
-        }
-        return result;
-    }
-
-    private static String formatArray(float[] numbers) {
-        StringBuilder sb = new StringBuilder();
-        int count = 0;
-        for (float number : numbers) {
-            sb.append(String.format("%.3f ", number));
-            count++;
-            if (count % 8 == 0) {
-                sb.append("\n");
-            }
-        }
-        if (count % 8 != 0) {
-            sb.append("\n");
-        }
-        return sb.toString();
     }
 }
