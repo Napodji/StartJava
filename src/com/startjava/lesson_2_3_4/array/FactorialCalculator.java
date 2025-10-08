@@ -44,14 +44,10 @@ public class FactorialCalculator {
     }
 
     private static OptionalLong calculateFactorial(int n) {
-        if (n < 0) {
-            System.out.println("Ошибка: факториал " + n + "! не определён");
+        if (n < 0 || n > 20) {  // ← УБРАЛИ System.out.println!
             return OptionalLong.empty();
         }
-        if (n > 20) {
-            System.out.println("Ошибка: факториал " + n + "! слишком велик (максимум 20!)");
-            return OptionalLong.empty();
-        }
+
         long factorial = 1L;
         for (int i = 2; i <= n; i++) {
             factorial *= i;
@@ -63,13 +59,15 @@ public class FactorialCalculator {
         if (numbers == null || factorials == null) {
             return;
         }
+
         int length = numbers.length;
+        StringBuilder sb = new StringBuilder();
+
         for (int i = 0; i < length; i++) {
             int number = numbers[i];
             long factorial = factorials[i];
             if (factorial == -1L) continue;
 
-            StringBuilder sb = new StringBuilder();
             if (number == 0) {
                 sb.append("0! = 1");
             } else if (number == 1) {
@@ -79,6 +77,7 @@ public class FactorialCalculator {
                         .append(factorial);
             }
             System.out.println(sb);
+            sb.setLength(0);
         }
     }
 
