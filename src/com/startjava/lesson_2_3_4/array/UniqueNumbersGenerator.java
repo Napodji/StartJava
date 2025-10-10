@@ -1,5 +1,6 @@
 package com.startjava.lesson_2_3_4.array;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public class UniqueNumbersGenerator {
@@ -19,17 +20,17 @@ public class UniqueNumbersGenerator {
             int right = test[1];
             int perLine = test[2];
 
-            int[] uniqueNumbers = generateAndSortUniqueNumbers(left, right);
+            int[] uniqueNumbers = generateSortedUniqueNumbers(left, right);
             printResult(left, right, perLine, uniqueNumbers);
         }
     }
 
-    private static int[] generateAndSortUniqueNumbers(int left, int right) {
+    private static int[] generateSortedUniqueNumbers(int left, int right) {
         if (left > right) {
             return null;
         }
 
-        int segmentLength = calculateSegmentLength(left, right);
+        int segmentLength = right - left + 1;
         int uniqueCount = (int) (segmentLength * UNIQUE_PERCENTAGE);
 
         if (uniqueCount < 1) {
@@ -37,54 +38,40 @@ public class UniqueNumbersGenerator {
         }
 
         int[] uniqueNumbers = generateUniqueNumbers(left, right, uniqueCount);
-        sortAscending(uniqueNumbers);
+        Arrays.sort(uniqueNumbers);
         return uniqueNumbers;
-    }
-
-    private static int calculateSegmentLength(int left, int right) {
-        return right - left + 1;
     }
 
     private static int[] generateUniqueNumbers(int left, int right, int count) {
-        int segmentLength = calculateSegmentLength(left, right);
-        int[] consecutiveNumbers = new int[segmentLength];
+        int segmentLength = right - left + 1;
 
-        for (int i = 0; i < segmentLength; i++) {
-            consecutiveNumbers[i] = left + i;
+        if (segmentLength < count) {
+            return null;
         }
 
-        shuffle(consecutiveNumbers);
-
-        int[] uniqueNumbers = new int[count];
-        System.arraycopy(consecutiveNumbers, 0, uniqueNumbers, 0, count);
-        return uniqueNumbers;
-    }
-
-    private static void shuffle(int[] numbers) {
+        int[] uniqueNums = new int[count];
         Random random = new Random();
-        int len = numbers.length;
+        int added = 0;
 
-        for (int i = len - 1; i > 0; i--) {
-            int randomIndex = random.nextInt(i + 1);
-            swap(numbers, i, randomIndex);
-        }
-    }
+        while (added < count) {
+            int num = left + random.nextInt(segmentLength);
 
-    private static void swap(int[] numbers, int i, int j) {
-        int temp = numbers[i];
-        numbers[i] = numbers[j];
-        numbers[j] = temp;
-    }
-
-    private static void sortAscending(int[] numbers) {
-        int len = numbers.length;
-        for (int i = 0; i < len - 1; i++) {
-            for (int j = i + 1; j < len; j++) {
-                if (numbers[j] < numbers[i]) {
-                    swap(numbers, i, j);
-                }
+            if (!contains(uniqueNums, num, added)) {
+                uniqueNums[added] = num;
+                added++;
             }
         }
+
+        return uniqueNums;
+    }
+
+    private static boolean contains(int[] array, int value, int length) {
+        for (int i = 0; i < length; i++) {
+            if (array[i] == value) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static void printResult(int left, int right, int perLine, int[] uniqueNumbers) {
@@ -108,7 +95,8 @@ public class UniqueNumbersGenerator {
             return false;
         }
         if (uniqueNumbers == null) {
-            int neededLength = (int) (calculateSegmentLength(left, right) * UNIQUE_PERCENTAGE);
+            int segmentLength = right - left + 1;
+            int neededLength = (int) (segmentLength * UNIQUE_PERCENTAGE);
             System.out.printf("Ошибка: длина массива должна быть > 0 (%d)%n%n", neededLength);
             return false;
         }
