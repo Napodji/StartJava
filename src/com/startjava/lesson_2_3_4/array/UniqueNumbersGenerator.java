@@ -21,7 +21,7 @@ public class UniqueNumbersGenerator {
             int perLine = test[2];
 
             int[] uniqueNumbers = generateSortedUniqueNumbers(left, right);
-            printResult(left, right, perLine, uniqueNumbers);
+            printUniqueNumbers(left, right, perLine, uniqueNumbers);
         }
     }
 
@@ -37,35 +37,24 @@ public class UniqueNumbersGenerator {
             return null;
         }
 
-        int[] uniqueNumbers = generateUniqueNumbers(left, right, uniqueCount);
+        int[] uniqueNumbers = new int[uniqueCount];
+        Random random = new Random();
+        int index = 0;
+
+        while (index < uniqueCount) {
+            int number = left + random.nextInt(segmentLength);
+
+            if (!containsNumber(uniqueNumbers, number, index)) {
+                uniqueNumbers[index] = number;
+                index++;
+            }
+        }
+
         Arrays.sort(uniqueNumbers);
         return uniqueNumbers;
     }
 
-    private static int[] generateUniqueNumbers(int left, int right, int count) {
-        int segmentLength = right - left + 1;
-
-        if (segmentLength < count) {
-            return null;
-        }
-
-        int[] uniqueNums = new int[count];
-        Random random = new Random();
-        int added = 0;
-
-        while (added < count) {
-            int num = left + random.nextInt(segmentLength);
-
-            if (!contains(uniqueNums, num, added)) {
-                uniqueNums[added] = num;
-                added++;
-            }
-        }
-
-        return uniqueNums;
-    }
-
-    private static boolean contains(int[] array, int value, int length) {
+    private static boolean containsNumber(int[] array, int value, int length) {
         for (int i = 0; i < length; i++) {
             if (array[i] == value) {
                 return true;
@@ -74,21 +63,22 @@ public class UniqueNumbersGenerator {
         return false;
     }
 
-    private static void printResult(int left, int right, int perLine, int[] uniqueNumbers) {
+    private static void printUniqueNumbers(int left, int right, int perLine,
+                                           int[] uniqueNumbers) {
         System.out.printf("Ввод: левая граница = %d, правая = %d, чисел в строке = %d%n",
                 left, right, perLine);
 
-        if (!validateAndPrintError(left, right, perLine, uniqueNumbers)) {
+        if (!isValid(left, right, perLine, uniqueNumbers)) {
             return;
         }
 
-        System.out.print("Результат: ");
+        System.out.println("Результат:");
         printNumbers(uniqueNumbers, perLine);
         System.out.println();
     }
 
-    private static boolean validateAndPrintError(int left, int right, int perLine,
-                                                 int[] uniqueNumbers) {
+    private static boolean isValid(int left, int right, int perLine,
+                                   int[] uniqueNumbers) {
         if (perLine < 1) {
             System.out.printf("Ошибка: количество чисел в строке не должно быть < 1 (%d)%n%n",
                     perLine);
@@ -104,12 +94,12 @@ public class UniqueNumbersGenerator {
     }
 
     private static void printNumbers(int[] numbers, int perLine) {
-        int len = numbers.length;
+        int length = numbers.length;
 
-        for (int i = 0; i < len; i++) {
+        for (int i = 0; i < length; i++) {
             System.out.print(numbers[i]);
 
-            if (i == len - 1) {
+            if (i == length - 1) {
                 System.out.println();
             } else if ((i + 1) % perLine == 0) {
                 System.out.println();
