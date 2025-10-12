@@ -79,17 +79,19 @@ public class UniqueNumbersGenerator {
 
     private static boolean isValid(int left, int right, int perLine,
                                    int[] uniqueNumbers) {
-        if (perLine < 1) {
-            System.out.printf("Ошибка: количество чисел в строке не должно быть < 1 (%d)%n%n",
-                    perLine);
-            return false;
-        }
         if (uniqueNumbers == null) {
             int segmentLength = right - left + 1;
             int neededLength = (int) (segmentLength * UNIQUE_PERCENTAGE);
             System.out.printf("Ошибка: длина массива должна быть > 0 (%d)%n%n", neededLength);
             return false;
         }
+
+        if (perLine < 1) {
+            System.out.printf("Ошибка: количество чисел в строке не должно быть < 1 (%d)%n%n",
+                    perLine);
+            return false;
+        }
+
         return true;
     }
 
