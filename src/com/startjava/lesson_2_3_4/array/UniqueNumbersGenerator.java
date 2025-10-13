@@ -80,9 +80,8 @@ public class UniqueNumbersGenerator {
     private static boolean isValid(int left, int right, int perLine,
                                    int[] uniqueNumbers) {
         if (uniqueNumbers == null) {
-            int segmentLength = right - left + 1;
-            int neededLength = (int) (segmentLength * UNIQUE_PERCENTAGE);
-            System.out.printf("Ошибка: длина массива должна быть > 0 (%d)%n%n", neededLength);
+            System.out.printf("Ошибка: невозможно сгенерировать массив для диапазона [%d, %d]%n%n",
+                    left, right);
             return false;
         }
 

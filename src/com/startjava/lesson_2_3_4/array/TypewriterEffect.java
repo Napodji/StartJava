@@ -8,49 +8,51 @@ public class TypewriterEffect {
     public static void main(String[] args) {
         String[] texts = {
                 "Java - это С++, из которого убрали все пистолеты, ножи и дубинки.\n- James Gosling",
-                "Чтобы написать чистый код, мы сначала пишем грязный код, затем рефакторим его.\n- " +
-                        "Robert Martin",
+                "Чтобы написать чистый код, мы сначала пишем грязный код, затем рефакторим его.\n" +
+                        "- Robert Martin",
                 null,
                 ""
         };
 
         for (String text : texts) {
-            printText(text);
+            String result = transformText(text);
+            printWithTypewriterEffect(result);
         }
     }
 
-    private static void printText(String text) {
+    private static String transformText(String text) {
         if (text == null) {
-            System.out.println("Ошибка: текст не задан.\n");
-            return;
+            return "Ошибка: текст не задан.";
         }
 
         if (text.isBlank()) {
-            System.out.println("Ошибка: текст пустой.\n");
-            return;
+            return "Ошибка: текст пустой.";
         }
 
         int wordCount = countWords(text);
         if (wordCount == 0) {
-            System.out.println("Ошибка: в тексте нет слов\n");
-            return;
+            return "Ошибка: в тексте нет слов";
         }
 
         String[] words = new String[wordCount];
-        int[][] positions = new int[2][wordCount];
+        int[] starts = new int[wordCount];
+        int[] ends = new int[wordCount];
 
-        extractWords(text, words, positions);
+        extractWords(text, words, starts, ends);
 
         int shortestIndex = findShortestWord(words);
         int longestIndex = findLongestWord(words);
 
-        int[] pair = findMaxRangePair(words, positions, shortestIndex, longestIndex);
+        int[] pair = findMaxRangePair(words, starts, shortestIndex, longestIndex);
         int finalShortestIndex = pair[0];
         int finalLongestIndex = pair[1];
 
-        String transformedText = convertMaxRangeToUpperCase(text, positions, finalShortestIndex,
+        return convertMaxRangeToUpperCase(text, starts, ends, finalShortestIndex,
                 finalLongestIndex);
-        printWithTypewriterEffect(transformedText);
+    }
+
+    private static void printWithTypewriterEffect(String text) {
+        printText(text);
         System.out.println("\n");
     }
 
@@ -74,7 +76,7 @@ public class TypewriterEffect {
         return count;
     }
 
-    private static void extractWords(String text, String[] words, int[][] positions) {
+    private static void extractWords(String text, String[] words, int[] starts, int[] ends) {
         int wordIndex = 0;
         int start = -1;
 
@@ -88,8 +90,8 @@ public class TypewriterEffect {
             } else {
                 if (start != -1) {
                     words[wordIndex] = text.substring(start, i);
-                    positions[0][wordIndex] = start;
-                    positions[1][wordIndex] = i - 1;
+                    starts[wordIndex] = start;
+                    ends[wordIndex] = i - 1;
                     wordIndex++;
                     start = -1;
                 }
@@ -98,8 +100,8 @@ public class TypewriterEffect {
 
         if (start != -1) {
             words[wordIndex] = text.substring(start);
-            positions[0][wordIndex] = start;
-            positions[1][wordIndex] = text.length() - 1;
+            starts[wordIndex] = start;
+            ends[wordIndex] = text.length() - 1;
         }
     }
 
@@ -123,7 +125,7 @@ public class TypewriterEffect {
         return longestIndex;
     }
 
-    private static int[] findMaxRangePair(String[] words, int[][] positions,
+    private static int[] findMaxRangePair(String[] words, int[] starts,
                                           int shortestIndex, int longestIndex) {
         if (words.length == 1) {
             return new int[]{0, 0};
@@ -146,7 +148,7 @@ public class TypewriterEffect {
                     continue;
                 }
 
-                int distance = Math.abs(positions[0][j] - positions[0][i]);
+                int distance = Math.abs(starts[j] - starts[i]);
                 if (distance > maxDistance) {
                     maxDistance = distance;
                     bestShortIndex = i;
@@ -158,10 +160,10 @@ public class TypewriterEffect {
         return new int[]{bestShortIndex, bestLongIndex};
     }
 
-    private static String convertMaxRangeToUpperCase(String text, int[][] positions,
+    private static String convertMaxRangeToUpperCase(String text, int[] starts, int[] ends,
                                                      int firstIndex, int secondIndex) {
-        int startPos = Math.min(positions[0][firstIndex], positions[0][secondIndex]);
-        int endPos = Math.max(positions[1][firstIndex], positions[1][secondIndex]);
+        int startPos = Math.min(starts[firstIndex], starts[secondIndex]);
+        int endPos = Math.max(ends[firstIndex], ends[secondIndex]);
 
         String before = text.substring(0, startPos);
         String range = text.substring(startPos, endPos + 1).toUpperCase();
@@ -170,14 +172,14 @@ public class TypewriterEffect {
         return before + range + after;
     }
 
-    private static void printWithTypewriterEffect(String text) {
+    private static void printText(String text) {
         for (int i = 0; i < text.length(); i++) {
             System.out.print(text.charAt(i));
             try {
                 TimeUnit.MILLISECONDS.sleep(TYPING_DELAY_MS);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                System.err.println("\nОшибка:прерывание во время задержки");
+                System.err.println("\nОшибка: прерывание во время задержки");
                 break;
             }
         }
