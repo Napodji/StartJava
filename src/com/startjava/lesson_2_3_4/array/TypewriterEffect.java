@@ -15,14 +15,11 @@ public class TypewriterEffect {
         };
 
         for (String text : texts) {
-            String result = highlightExtremeWords(text);
-            if (result != null) {
-                type(result);
-            }
+            type(toUpperCaseRange(text));
         }
     }
 
-    private static String highlightExtremeWords(String originalText) {
+    private static String toUpperCaseRange(String originalText) {
         if (originalText == null) {
             System.out.println("Ошибка: текст не задан.");
             return null;
@@ -40,54 +37,18 @@ public class TypewriterEffect {
             return null;
         }
 
-        int[] starts = new int[originalText.length()];
-        int[] ends = new int[originalText.length()];
-
-        int wordCount = extractWordPositions(originalText, words, starts, ends);
-
-        int[] extremeIndices = findExtremeWordIndices(words, wordCount);
+        int[] extremeIndices = findExtremeWordIndices(words);
         int shortestIndex = extremeIndices[0];
         int longestIndex = extremeIndices[1];
 
-        return toUpperCaseRange(originalText, starts, ends, shortestIndex, longestIndex);
+        return toUpperCaseBetweenWords(originalText, words[shortestIndex], words[longestIndex]);
     }
 
-    private static int extractWordPositions(String originalText, String[] words,
-                                            int[] starts, int[] ends) {
-        int wordIndex = 0;
-        int start = -1;
-
-        for (int i = 0; i < originalText.length(); i++) {
-            char c = originalText.charAt(i);
-
-            if (Character.isLetterOrDigit(c) || c == '+' || c == '#') {
-                if (start == -1) {
-                    start = i;
-                }
-            } else {
-                if (start != -1) {
-                    starts[wordIndex] = start;
-                    ends[wordIndex] = i - 1;
-                    wordIndex++;
-                    start = -1;
-                }
-            }
-        }
-
-        if (start != -1) {
-            starts[wordIndex] = start;
-            ends[wordIndex] = originalText.length() - 1;
-            wordIndex++;
-        }
-
-        return wordIndex;
-    }
-
-    private static int[] findExtremeWordIndices(String[] words, int wordCount) {
+    private static int[] findExtremeWordIndices(String[] words) {
         int shortestIndex = 0;
         int longestIndex = 0;
 
-        for (int i = 1; i < wordCount; i++) {
+        for (int i = 1; i < words.length; i++) {
             if (words[i].length() < words[shortestIndex].length()) {
                 shortestIndex = i;
             }
@@ -100,19 +61,26 @@ public class TypewriterEffect {
         return new int[]{shortestIndex, longestIndex};
     }
 
-    private static String toUpperCaseRange(String originalText, int[] starts, int[] ends,
-                                           int firstIndex, int secondIndex) {
-        int startPos = Math.min(starts[firstIndex], starts[secondIndex]);
-        int endPos = Math.max(ends[firstIndex], ends[secondIndex]);
+    private static String toUpperCaseBetweenWords(String originalText, String firstWord,
+                                                  String secondWord) {
+        int firstPos = originalText.indexOf(firstWord);
+        int secondPos = originalText.indexOf(secondWord);
+
+        int startPos = Math.min(firstPos, secondPos);
+        int endPos = Math.max(firstPos + firstWord.length(), secondPos + secondWord.length());
 
         String before = originalText.substring(0, startPos);
-        String range = originalText.substring(startPos, endPos + 1).toUpperCase();
-        String after = originalText.substring(endPos + 1);
+        String range = originalText.substring(startPos, endPos).toUpperCase();
+        String after = originalText.substring(endPos);
 
         return before + range + after;
     }
 
     private static void type(String text) {
+        if (text == null) {
+            return;
+        }
+
         for (int i = 0; i < text.length(); i++) {
             System.out.print(text.charAt(i));
             try {
