@@ -53,7 +53,8 @@ public class TypewriterEffect {
         int longestIndex = 0;
 
         for (int i = 1; i < words.length; i++) {
-            if (!isWholeWord(words[i], originalText)) {
+            int position = findWholeWordPosition(words[i], originalText);
+            if (position == -1) {
                 continue;
             }
 
@@ -69,66 +70,40 @@ public class TypewriterEffect {
         return new int[]{shortestIndex, longestIndex};
     }
 
-    private static boolean isWholeWord(String word, String text) {
-        String lowerWord = word.toLowerCase();
-        String lowerText = text.toLowerCase();
-        int index = lowerText.indexOf(lowerWord);
-
-        while (index != -1) {
-            boolean validBefore = (index == 0) ||
-                    !Character.isLetter(text.charAt(index - 1));
-            int endIndex = index + word.length();
-            boolean validAfter = (endIndex >= text.length()) ||
-                    !Character.isLetter(text.charAt(endIndex));
-
-            if (validBefore && validAfter) {
-                return true;
-            }
-
-            index = lowerText.indexOf(lowerWord, index + 1);
-        }
-
-        return false;
-    }
-
     private static String toUpperCaseBetweenWords(String originalText, String firstWord,
                                                   String secondWord) {
-        int firstPos = findWordPosition(originalText, firstWord);
-        int secondPos = findWordPosition(originalText, secondWord);
+        int firstPos = findWholeWordPosition(firstWord, originalText);
+        int secondPos = findWholeWordPosition(secondWord, originalText);
 
         if (firstPos == -1 || secondPos == -1) {
             return originalText;
         }
 
         int startPos = Math.min(firstPos, secondPos);
-        int firstEndPos = firstPos + firstWord.length();
-        int secondEndPos = secondPos + secondWord.length();
-        int endPos = Math.max(firstEndPos, secondEndPos);
+        int endPos = Math.max(firstPos + firstWord.length(),
+                secondPos + secondWord.length());
 
-        String before = originalText.substring(0, startPos);
-        String range = originalText.substring(startPos, endPos).toUpperCase();
-        String after = originalText.substring(endPos);
-
-        return before + range + after;
+        return originalText.substring(0, startPos) +
+                originalText.substring(startPos, endPos).toUpperCase() +
+                originalText.substring(endPos);
     }
 
-    private static int findWordPosition(String text, String word) {
+    private static int findWholeWordPosition(String word, String text) {
         String lowerWord = word.toLowerCase();
         String lowerText = text.toLowerCase();
-        int index = lowerText.indexOf(lowerWord);
+        int index = 0;
 
-        while (index != -1) {
-            boolean validBefore = (index == 0) ||
+        while ((index = lowerText.indexOf(lowerWord, index)) != -1) {
+            boolean validBefore = index == 0 ||
                     !Character.isLetter(text.charAt(index - 1));
             int endIndex = index + word.length();
-            boolean validAfter = (endIndex >= text.length()) ||
+            boolean validAfter = endIndex >= text.length() ||
                     !Character.isLetter(text.charAt(endIndex));
 
             if (validBefore && validAfter) {
                 return index;
             }
-
-            index = lowerText.indexOf(lowerWord, index + 1);
+            index++;
         }
 
         return -1;
