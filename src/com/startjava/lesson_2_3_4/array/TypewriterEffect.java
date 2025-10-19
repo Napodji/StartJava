@@ -31,26 +31,49 @@ public class TypewriterEffect {
             return null;
         }
 
-        String[] words = originalText.replaceAll("\\p{P}", "").split("\\s+");
+        String[] words = originalText.split("\\s+");
+        String[] cleanWords = new String[words.length];
+        int[] positions = new int[words.length];
+        int wordCount = 0;
+        int searchFrom = 0;
 
-        if (words.length == 0) {
+        for (String word : words) {
+            int wordPos = originalText.indexOf(word, searchFrom);
+            String cleanWord = word.replaceAll("\\p{P}", "");
+
+            if (!cleanWord.isEmpty()) {
+                cleanWords[wordCount] = cleanWord;
+                int leadingPunctuationLength = word.indexOf(cleanWord);
+                positions[wordCount] = wordPos + leadingPunctuationLength;
+                wordCount++;
+            }
+
+            searchFrom = wordPos + word.length();
+        }
+
+        if (wordCount == 0) {
             System.out.println("Ошибка: в тексте нет слов");
             return null;
         }
 
-        int[] extremeIndices = findExtremeWordIndices(words);
+        int[] extremeIndices = findExtremeWordIndices(cleanWords, wordCount);
         int shortestIndex = extremeIndices[0];
         int longestIndex = extremeIndices[1];
 
-        return toUpperCaseBetweenWords(originalText, words[shortestIndex],
-                words[longestIndex]);
+        int startPos = Math.min(positions[shortestIndex], positions[longestIndex]);
+        int endPos = Math.max(positions[shortestIndex] + cleanWords[shortestIndex].length(),
+                positions[longestIndex] + cleanWords[longestIndex].length());
+
+        return originalText.substring(0, startPos) +
+                originalText.substring(startPos, endPos).toUpperCase() +
+                originalText.substring(endPos);
     }
 
-    private static int[] findExtremeWordIndices(String[] words) {
+    private static int[] findExtremeWordIndices(String[] words, int count) {
         int shortestIndex = 0;
         int longestIndex = 0;
 
-        for (int i = 1; i < words.length; i++) {
+        for (int i = 1; i < count; i++) {
             if (words[i].isEmpty()) continue;
 
             if (words[i].length() < words[shortestIndex].length()) {
@@ -63,42 +86,6 @@ public class TypewriterEffect {
         }
 
         return new int[]{shortestIndex, longestIndex};
-    }
-
-    private static String toUpperCaseBetweenWords(String originalText, String firstWord,
-                                                  String secondWord) {
-        int firstPos = findWholeWordPosition(originalText, firstWord);
-        int secondPos = findWholeWordPosition(originalText, secondWord);
-
-        if (firstPos == -1 || secondPos == -1) {
-            return originalText;
-        }
-
-        int startPos = Math.min(firstPos, secondPos);
-        int endPos = Math.max(firstPos + firstWord.length(),
-                secondPos + secondWord.length());
-
-        return originalText.substring(0, startPos) +
-                originalText.substring(startPos, endPos).toUpperCase() +
-                originalText.substring(endPos);
-    }
-
-    private static int findWholeWordPosition(String text, String word) {
-        String lowerText = text.toLowerCase();
-        String lowerWord = word.toLowerCase();
-        int pos = 0;
-
-        while ((pos = lowerText.indexOf(lowerWord, pos)) != -1) {
-            boolean validBefore = pos == 0 || !Character.isLetter(text.charAt(pos - 1));
-            int endPos = pos + word.length();
-            boolean validAfter = endPos >= text.length() || !Character.isLetter(text.charAt(endPos));
-
-            if (validBefore && validAfter) {
-                return pos;
-            }
-            pos++;
-        }
-        return -1;
     }
 
     private static void type(String text) {
