@@ -6,31 +6,42 @@ public class CalculatorTest {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Calculator calculator = new Calculator();
-        String continuation = "YES";
+        String continuation = "yes";
 
-        while (continuation.equals("YES")) {
-            System.out.println("Введите первое число: ");
-            long a = scanner.nextLong();
+        while (continuation.equals("yes")) {
+            System.out.print("Введите выражение (например: 2 + 3): ");
+            String expression = scanner.nextLine();
 
-            System.out.println("Введите знак операции (+, -, *, /, ^, %): ");
-            char operation = scanner.next().charAt(0);
+            double result = calculator.calculate(expression);
 
-            System.out.println("Введите второе число: ");
-            long b = scanner.nextLong();
-
-            long result = calculator.calculate(a, operation, b);
-
-            if (!(operation == '/' && b == 0)) {
-                System.out.println(a + " " + operation + " " + b + " = " + result);
+            if (!Double.isNaN(result)) {
+                printResult(expression, result);
             }
 
-            do {
-                System.out.println("Хотите продолжить вычисления? [YES/NO]: ");
-                continuation = scanner.next().toUpperCase();
-            } while (!continuation.equals("YES") && !continuation.equals("NO"));
+            continuation = askToContinue(scanner);
         }
 
         scanner.close();
     }
-}
 
+    private static void printResult(String expression, double result) {
+        if (result == (long) result) {
+            System.out.println(expression + " = " + (long) result);
+        } else {
+            System.out.printf("%s = %.3f%n", expression, result);
+        }
+    }
+
+    private static String askToContinue(Scanner scanner) {
+        while (true) {
+            System.out.print("Хотите продолжить вычисления? [yes/no]: ");
+            String answer = scanner.nextLine().toLowerCase();
+
+            if (answer.equals("yes") || answer.equals("no")) {
+                return answer;
+            }
+
+            System.out.println("Ошибка: введите yes или no");
+        }
+    }
+}
