@@ -5,8 +5,9 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class HangmanGame {
-    private static final String[] WORDS = {"КЛАВИАТУРА", "ПРОЦЕССОР", "ВИДЕОКАРТА", "ПАМЯТЬ",
-            "ПРОГРАММА", "ПОЛЬЗОВАТЕЛЬ"};
+    private static final String[] WORDS =
+              {"КЛАВИАТУРА", "ПРОЦЕССОР", "ВИДЕОКАРТА", "ПАМЯТЬ",
+                      "ПРОГРАММА", "ПОЛЬЗОВАТЕЛЬ"};
     private static final String[] HANGMAN = {
             "_______",
             "|     |",
@@ -18,36 +19,34 @@ public class HangmanGame {
     private static final int MAX_ATTEMPTS = HANGMAN.length;
     private static final int SEPARATOR_LENGTH = 30;
 
-    private HangmanGame() {
+    private String word;
+    private char[] mask;
+    private StringBuilder wrongLetters;
+    private StringBuilder usedLetters;
+    private int attemptsLeft;
+    private int hangmanLevel;
+    private Scanner scanner;
+
+    public HangmanGame() {
+        scanner = new Scanner(System.in);
+        word = selectRandomWord();
+        mask = createMask(word.length());
+        wrongLetters = new StringBuilder();
+        usedLetters = new StringBuilder();
+        attemptsLeft = MAX_ATTEMPTS;
+        hangmanLevel = 0;
     }
 
-    public static void start() {
-        Scanner scanner = new Scanner(System.in);
-        boolean playAgain = true;
-
-        while (playAgain) {
-            play(scanner);
-            playAgain = askToContinue(scanner);
-        }
-    }
-
-    private static void play(Scanner scanner) {
-        String word = selectRandomWord();
-        char[] mask = createMask(word.length());
-        StringBuilder wrongLetters = new StringBuilder();
-        StringBuilder usedLetters = new StringBuilder();
-        int attemptsLeft = MAX_ATTEMPTS;
-        int hangmanLevel = 0;
-
+    public void start() {
         System.out.println("\nУгадай слово!");
 
-        while (attemptsLeft > 0 && !isWordGuessed(mask)) {
-            printGameState(mask, wrongLetters.toString(), attemptsLeft, hangmanLevel);
+        while (attemptsLeft > 0 && !isGuessed()) {
+            printGameState();
 
-            char letter = inputLetter(scanner, usedLetters.toString());
+            char letter = inputLetter();
 
             if (word.indexOf(letter) >= 0) {
-                updateMask(word, mask, letter);
+                updateMask(letter);
                 if (hangmanLevel > 0) {
                     hangmanLevel--;
                     attemptsLeft++;
@@ -61,28 +60,23 @@ public class HangmanGame {
             usedLetters.append(letter);
         }
 
-        printGameResult(word, mask, hangmanLevel);
+        printGameResult();
     }
 
-    private static String selectRandomWord() {
+    private String selectRandomWord() {
         Random random = new Random();
         return WORDS[random.nextInt(WORDS.length)];
     }
 
-    private static char[] createMask(int length) {
-        char[] mask = new char[length];
-        Arrays.fill(mask, '*');
-        return mask;
+    private char[] createMask(int length) {
+        char[] newMask = new char[length];
+        Arrays.fill(newMask, '*');
+        return newMask;
     }
 
-    private static boolean isWordGuessed(char[] mask) {
-        return new String(mask).indexOf('*') == -1;
-    }
-
-    private static void printGameState(char[] mask, String wrongLetters, int attemptsLeft,
-                                       int level) {
+    private void printGameState() {
         printSeparator();
-        printHangman(level);
+        printHangman();
 
         System.out.println("\nСлово:");
         for (char ch : mask) {
@@ -97,19 +91,23 @@ public class HangmanGame {
         }
     }
 
-    private static void printSeparator() {
+    private void printSeparator() {
         System.out.println("\n" + "=".repeat(SEPARATOR_LENGTH));
     }
 
-    private static void printHangman(int level) {
+    private void printHangman() {
         System.out.println("\nВиселица:");
-        int linesToPrint = Math.min(level, HANGMAN.length);
+        int linesToPrint = Math.min(hangmanLevel, HANGMAN.length);
         for (int i = 0; i < linesToPrint; i++) {
             System.out.println(HANGMAN[i]);
         }
     }
 
-    private static char inputLetter(Scanner scanner, String usedLetters) {
+    private boolean isGuessed() {
+        return Arrays.equals(mask, word.toCharArray());
+    }
+
+    private char inputLetter() {
         while (true) {
             System.out.print("\nВведите букву: ");
             String input = scanner.next().toUpperCase();
@@ -126,7 +124,7 @@ public class HangmanGame {
                 continue;
             }
 
-            if (usedLetters.indexOf(letter) >= 0) {
+            if (usedLetters.indexOf(String.valueOf(letter)) >= 0) {
                 System.out.println("Предупреждение: буква уже была введена");
                 continue;
             }
@@ -135,11 +133,11 @@ public class HangmanGame {
         }
     }
 
-    private static boolean isCyrillic(char ch) {
+    private boolean isCyrillic(char ch) {
         return (ch >= 'А' && ch <= 'Я') || ch == 'Ё';
     }
 
-    private static void updateMask(String word, char[] mask, char letter) {
+    private void updateMask(char letter) {
         for (int i = 0; i < word.length(); i++) {
             if (word.charAt(i) == letter) {
                 mask[i] = letter;
@@ -147,32 +145,14 @@ public class HangmanGame {
         }
     }
 
-    private static void printGameResult(String word, char[] mask, int level) {
+    private void printGameResult() {
         printSeparator();
-        printHangman(level);
+        printHangman();
 
-        if (isWordGuessed(mask)) {
+        if (isGuessed()) {
             System.out.println("\nПоздравляем! Вы угадали слово: " + word);
         } else {
             System.out.println("\nВы проиграли! Загаданное слово было: " + word);
-        }
-    }
-
-    private static boolean askToContinue(Scanner scanner) {
-        while (true) {
-            System.out.println("\nХотите сыграть еще раз? [yes / no]:");
-            String answer = scanner.next().toLowerCase();
-
-            if (answer.equals("yes")) {
-                return true;
-            }
-
-            if (answer.equals("no")) {
-                System.out.println("Спасибо за игру!");
-                return false;
-            }
-
-            System.out.println("Введите корректный ответ: [yes / no]");
         }
     }
 }

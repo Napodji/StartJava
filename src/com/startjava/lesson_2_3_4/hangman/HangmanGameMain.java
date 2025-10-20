@@ -1,9 +1,19 @@
 package com.startjava.lesson_2_3_4.hangman;
 
+import java.util.Scanner;
+
 public class HangmanGameMain {
     public static void main(String[] args) {
         printGameDescription();
-        HangmanGame.start();
+
+        Scanner scanner = new Scanner(System.in);
+        boolean playAgain = true;
+
+        while (playAgain) {
+            HangmanGame game = new HangmanGame();
+            game.start();
+            playAgain = askToContinue(scanner);
+        }
     }
 
     private static void printGameDescription() {
@@ -22,5 +32,23 @@ public class HangmanGameMain {
                 • Попыток ограничено - угадайте слово до полной виселицы!
                 ══════════════════════════════════════════════════
                 """);
+    }
+
+    private static boolean askToContinue(Scanner scanner) {
+        while (true) {
+            System.out.println("\nХотите сыграть еще раз? [yes / no]:");
+            String answer = scanner.next().toLowerCase();
+
+            if (answer.equals("yes")) {
+                return true;
+            }
+
+            if (answer.equals("no")) {
+                System.out.println("Спасибо за игру!");
+                return false;
+            }
+
+            System.out.println("Введите корректный ответ: [yes / no]");
+        }
     }
 }
