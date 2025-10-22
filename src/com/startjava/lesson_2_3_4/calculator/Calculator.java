@@ -2,37 +2,56 @@ package com.startjava.lesson_2_3_4.calculator;
 
 public class Calculator {
     public double calculate(String expression) {
+        String[] parts = validateExpression(expression);
+        if (parts == null) {
+            return Double.NaN;
+        }
+
+        int a = Integer.parseInt(parts[0]);
+        int b = Integer.parseInt(parts[2]);
+        char operation = parts[1].charAt(0);
+
+        return performOperation(a, operation, b);
+    }
+
+    private String[] validateExpression(String expression) {
         if (expression == null || expression.isBlank()) {
             System.out.println("Ошибка: выражение не может быть пустым");
-            return Double.NaN;
+            return null;
         }
 
         String[] parts = expression.split(" ");
 
         if (parts.length != 3) {
             System.out.println("Ошибка: выражение должно содержать два числа и операцию");
-            return Double.NaN;
+            return null;
         }
 
-        int a;
-        int b;
-
-        try {
-            a = Integer.parseInt(parts[0]);
-            b = Integer.parseInt(parts[2]);
-        } catch (NumberFormatException e) {
-            System.out.println("Ошибка: введены некорректные числа");
-            return Double.NaN;
+        if (!isInteger(parts[0])) {
+            System.out.printf("Ошибка: '%s' не является целым числом%n", parts[0]);
+            return null;
         }
 
-        char operation = parts[1].charAt(0);
+        if (!isInteger(parts[2])) {
+            System.out.printf("Ошибка: '%s' не является целым числом%n", parts[2]);
+            return null;
+        }
 
         if (parts[1].length() != 1) {
             System.out.println("Ошибка: операция должна быть одним символом");
-            return Double.NaN;
+            return null;
         }
 
-        return performOperation(a, operation, b);
+        return parts;
+    }
+
+    private boolean isInteger(String str) {
+        try {
+            Integer.parseInt(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     private double performOperation(int a, char operation, int b) {
@@ -58,7 +77,7 @@ public class Calculator {
                 }
                 return a % b;
             default:
-                System.out.println("Ошибка: операция '" + operation + "' не поддерживается");
+                System.out.printf("Ошибка: операция '%c' не поддерживается%n", operation);
                 return Double.NaN;
         }
     }

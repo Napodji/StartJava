@@ -1,5 +1,6 @@
 package com.startjava.lesson_2_3_4.calculator;
 
+import java.text.DecimalFormat;
 import java.util.Scanner;
 
 public class CalculatorTest {
@@ -11,13 +12,8 @@ public class CalculatorTest {
         while (continuation.equals("yes")) {
             System.out.print("Введите выражение (например: 2 + 3): ");
             String expression = scanner.nextLine();
-
             double result = calculator.calculate(expression);
-
-            if (!Double.isNaN(result)) {
-                printResult(expression, result);
-            }
-
+            printResult(expression, result);
             continuation = askToContinue(scanner);
         }
 
@@ -25,10 +21,15 @@ public class CalculatorTest {
     }
 
     private static void printResult(String expression, double result) {
+        if (Double.isNaN(result)) {
+            return;
+        }
+
         if (result == (long) result) {
             System.out.println(expression + " = " + (long) result);
         } else {
-            System.out.printf("%s = %.3f%n", expression, result);
+            DecimalFormat df = new DecimalFormat("#.###");
+            System.out.println(expression + " = " + df.format(result));
         }
     }
 

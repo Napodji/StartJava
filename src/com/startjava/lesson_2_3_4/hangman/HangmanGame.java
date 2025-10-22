@@ -6,8 +6,8 @@ import java.util.Scanner;
 
 public class HangmanGame {
     private static final String[] WORDS =
-              {"КЛАВИАТУРА", "ПРОЦЕССОР", "ВИДЕОКАРТА", "ПАМЯТЬ",
-                      "ПРОГРАММА", "ПОЛЬЗОВАТЕЛЬ"};
+              {"КЛАВИАТУРА", "ПРОЦЕССОР", "ВИДЕОКАРТА",
+                      "ПАМЯТЬ", "ПРОГРАММА", "ПОЛЬЗОВАТЕЛЬ"};
     private static final String[] HANGMAN = {
             "_______",
             "|     |",
@@ -91,22 +91,6 @@ public class HangmanGame {
         }
     }
 
-    private void printSeparator() {
-        System.out.println("\n" + "=".repeat(SEPARATOR_LENGTH));
-    }
-
-    private void printHangman() {
-        System.out.println("\nВиселица:");
-        int linesToPrint = Math.min(hangmanLevel, HANGMAN.length);
-        for (int i = 0; i < linesToPrint; i++) {
-            System.out.println(HANGMAN[i]);
-        }
-    }
-
-    private boolean isGuessed() {
-        return Arrays.equals(mask, word.toCharArray());
-    }
-
     private char inputLetter() {
         while (true) {
             System.out.print("\nВведите букву: ");
@@ -154,5 +138,21 @@ public class HangmanGame {
         } else {
             System.out.println("\nВы проиграли! Загаданное слово было: " + word);
         }
+    }
+
+    private void printSeparator() {
+        System.out.println("\n" + "=".repeat(SEPARATOR_LENGTH));
+    }
+
+    private void printHangman() {
+        System.out.println("\nВиселица:");
+        int linesToPrint = Math.min(hangmanLevel, HANGMAN.length);
+        for (int i = 0; i < linesToPrint; i++) {
+            System.out.println(HANGMAN[i]);
+        }
+    }
+
+    private boolean isGuessed() {
+        return Arrays.equals(mask, word.toCharArray());
     }
 }
