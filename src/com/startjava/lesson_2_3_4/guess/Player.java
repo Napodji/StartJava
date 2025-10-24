@@ -4,6 +4,8 @@ import java.util.Arrays;
 
 public class Player {
     private static final int MAX_ATTEMPTS = 10;
+    private static final int MIN_NUMBER = 1;
+    private static final int MAX_NUMBER = 100;
 
     private String name;
     private int[] numbers = new int[MAX_ATTEMPTS];
@@ -17,7 +19,19 @@ public class Player {
         return name;
     }
 
-    public void setNumber(int number) {
+    public void addNumber(int number) {
+        if (attemptCount >= MAX_ATTEMPTS) {
+            System.out.println("Ошибка: превышено максимальное количество попыток");
+            return;
+        }
+
+        if (number < MIN_NUMBER || number > MAX_NUMBER) {
+            System.out.printf("Число должно входить в отрезок [%d, %d]%n",
+                    MIN_NUMBER, MAX_NUMBER);
+            System.out.println("Попробуйте еще раз:");
+            return;
+        }
+
         numbers[attemptCount] = number;
         attemptCount++;
     }

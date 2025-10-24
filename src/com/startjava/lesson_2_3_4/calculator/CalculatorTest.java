@@ -25,24 +25,19 @@ public class CalculatorTest {
             return;
         }
 
-        if (result == (long) result) {
-            System.out.println(expression + " = " + (long) result);
-        } else {
-            DecimalFormat df = new DecimalFormat("#.###");
-            System.out.println(expression + " = " + df.format(result));
-        }
+        DecimalFormat df = new DecimalFormat("#.###");
+        System.out.println(expression + " = " + df.format(result));
     }
 
     private static String askToContinue(Scanner scanner) {
-        while (true) {
-            System.out.print("Хотите продолжить вычисления? [yes/no]: ");
-            String answer = scanner.nextLine().toLowerCase();
+        System.out.print("Хотите продолжить вычисления? [yes/no]: ");
+        String answer = scanner.nextLine().toLowerCase();
 
-            if (answer.equals("yes") || answer.equals("no")) {
-                return answer;
-            }
-
-            System.out.println("Ошибка: введите yes или no");
+        if (answer.equals("yes") || answer.equals("no")) {
+            return answer;
         }
+
+        System.out.println("Ошибка: введите yes или no");
+        return askToContinue(scanner);
     }
 }

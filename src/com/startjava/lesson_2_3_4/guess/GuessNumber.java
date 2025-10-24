@@ -38,34 +38,27 @@ public class GuessNumber {
 
             System.out.println("Попытка " + (currentPlayer.getAttemptCount() + 1));
             int guess = inputNumber(scanner, currentPlayer);
-            currentPlayer.setNumber(guess);
-            if (checkGuess(guess, currentPlayer)) {
+            currentPlayer.addNumber(guess);
+            if (isGuessed(guess, currentPlayer)) {
                 break;
             }
             currentPlayer = switchPlayer(currentPlayer);
             totalAttempts++;
         }
 
-        printResults();
+        printGameResult();
     }
 
     private void generateRandomNumber() {
         Random random = new Random();
-        guessNumber = random.nextInt(MAX_NUMBER) + MIN_NUMBER;
+        guessNumber = random.nextInt(MIN_NUMBER, MAX_NUMBER + 1);
     }
 
     private int inputNumber(Scanner scanner, Player player) {
         while (true) {
             System.out.print("Число вводит игрок " + player.getName() + ": ");
             try {
-                int number = Integer.parseInt(scanner.nextLine());
-                if (number < MIN_NUMBER || number > MAX_NUMBER) {
-                    System.out.printf("Число должно входить в отрезок [%d, %d]%n",
-                            MIN_NUMBER, MAX_NUMBER);
-                    System.out.println("Попробуйте еще раз:");
-                    continue;
-                }
-                return number;
+                return Integer.parseInt(scanner.nextLine());
             } catch (NumberFormatException e) {
                 System.out.println("Ошибка: введите корректное число");
                 System.out.println("Попробуйте еще раз:");
@@ -73,7 +66,7 @@ public class GuessNumber {
         }
     }
 
-    private boolean checkGuess(int guess, Player player) {
+    private boolean isGuessed(int guess, Player player) {
         if (guess == guessNumber) {
             System.out.printf("Игрок %s угадал число %d с %d-й попытки%n%n",
                     player.getName(), guessNumber, player.getAttemptCount());
@@ -88,7 +81,7 @@ public class GuessNumber {
         return currentPlayer == player1 ? player2 : player1;
     }
 
-    private void printResults() {
+    private void printGameResult() {
         System.out.println("Итоги игры:");
         printPlayerNumbers(player1);
         printPlayerNumbers(player2);
@@ -96,12 +89,8 @@ public class GuessNumber {
 
     private void printPlayerNumbers(Player player) {
         System.out.print("У игрока " + player.getName() + " были следующие попытки: ");
-        int[] numbers = player.getNumbers();
-        for (int i = 0; i < numbers.length; i++) {
-            System.out.print(numbers[i]);
-            if (i < numbers.length - 1) {
-                System.out.print(" ");
-            }
+        for (int number : player.getNumbers()) {
+            System.out.print(number + " ");
         }
         System.out.println();
     }

@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class GuessNumberTest {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        printGameRules();
+        printGameDescription();
 
         System.out.print("Введите имя первого игрока: ");
         String name1 = scanner.nextLine();
@@ -26,22 +26,22 @@ public class GuessNumberTest {
         scanner.close();
     }
 
-    private static void printGameRules() {
+    private static void printGameDescription() {
         System.out.println("""
-                
-                ========== ИГРА "УГАДАЙ ЧИСЛО" ==========
-                
-                ПРАВИЛА:
-                1. Компьютер загадывает число от 1 до 100
-                2. Два игрока по очереди пытаются его угадать
-                3. У каждого игрока по 10 попыток
-                4. После каждой попытки даётся подсказка
-                5. Побеждает тот, кто первым угадает число
-                
-                Неверный ввод не тратит попытки!
-                ==========================================
-                
-                """);
+        
+        ========== ИГРА "УГАДАЙ ЧИСЛО" ==========
+        
+        ПРАВИЛА:
+        1. Компьютер загадывает число от 1 до 100
+        2. Два игрока по очереди пытаются его угадать
+        3. У каждого игрока по 10 попыток
+        4. После каждой попытки даётся подсказка
+        5. Побеждает тот, кто первым угадает число
+        
+        Неверный ввод не тратит попытки!
+        ==========================================
+        
+        """);
     }
 
     private static String askToContinue(Scanner scanner) {
