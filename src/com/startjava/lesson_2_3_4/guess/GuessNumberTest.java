@@ -28,30 +28,29 @@ public class GuessNumberTest {
 
     private static void printGameDescription() {
         System.out.println("""
-        
-        ========== ИГРА "УГАДАЙ ЧИСЛО" ==========
-        
-        ПРАВИЛА:
-        1. Компьютер загадывает число от 1 до 100
-        2. Два игрока по очереди пытаются его угадать
-        3. У каждого игрока по 10 попыток
-        4. После каждой попытки даётся подсказка
-        5. Побеждает тот, кто первым угадает число
-        
-        Неверный ввод не тратит попытки!
-        ==========================================
-        
-        """);
+
+========== ИГРА "УГАДАЙ ЧИСЛО" ==========
+
+ПРАВИЛА:
+1. Компьютер загадывает число от 1 до 100
+2. Два игрока по очереди пытаются его угадать
+3. У каждого игрока по 10 попыток
+4. После каждой попытки даётся подсказка
+5. Побеждает тот, кто первым угадает число
+
+Неверный ввод не тратит попытки!
+==========================================
+
+""");
     }
 
     private static String askToContinue(Scanner scanner) {
-        while (true) {
-            System.out.print("\nСыграем еще? (yes/no): ");
-            String answer = scanner.nextLine().toLowerCase();
-            if (answer.equals("yes") || answer.equals("no")) {
-                return answer;
-            }
-            System.out.println("Неверный ввод, повторите!");
+        System.out.print("\nСыграем еще? (yes/no): ");
+        String answer = scanner.nextLine().toLowerCase();
+        if (answer.equals("yes") || answer.equals("no")) {
+            return answer;
         }
+        System.out.println("Неверный ввод, повторите!");
+        return askToContinue(scanner);
     }
 }

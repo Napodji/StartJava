@@ -28,7 +28,6 @@ public class Player {
         if (number < MIN_NUMBER || number > MAX_NUMBER) {
             System.out.printf("Число должно входить в отрезок [%d, %d]%n",
                     MIN_NUMBER, MAX_NUMBER);
-            System.out.println("Попробуйте еще раз:");
             return;
         }
 
