@@ -3,18 +3,23 @@ package com.startjava.graduation;
 import java.util.Arrays;
 
 public class Bookcase {
-    private static final int INITIAL_CAPACITY = 10;
+    private static final int CAPACITY = 10;
     private static final double GROWTH_FACTOR = 1.5;
 
     private Book[] books;
     private int size;
 
     public Bookcase() {
-        books = new Book[INITIAL_CAPACITY];
+        books = new Book[CAPACITY];
     }
 
     public boolean add(Book book) {
         if (book == null) {
+            return false;
+        }
+
+        if (size == CAPACITY) {
+            System.out.println("Ошибка: шкаф заполнен");
             return false;
         }
 
@@ -25,6 +30,11 @@ public class Bookcase {
         books[size] = book;
         size++;
         return true;
+    }
+
+    private void grow() {
+        int newCapacity = (int) (books.length * GROWTH_FACTOR) + 1;
+        books = Arrays.copyOf(books, newCapacity);
     }
 
     public Book find(String title) {
@@ -68,17 +78,12 @@ public class Bookcase {
         return size;
     }
 
-    public int getFreeSlots() {
-        return books.length - size;
+    public int getFreeShelves() {
+        return CAPACITY - size;
     }
 
     public void clear() {
         Arrays.fill(books, 0, size, null);
         size = 0;
-    }
-
-    private void grow() {
-        int newCapacity = (int) (books.length * GROWTH_FACTOR);
-        books = Arrays.copyOf(books, newCapacity);
     }
 }

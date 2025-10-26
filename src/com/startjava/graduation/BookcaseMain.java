@@ -3,7 +3,7 @@ package com.startjava.graduation;
 import java.time.Year;
 import java.util.Scanner;
 
-public class UserMenu {
+public class BookcaseMain {
     private static final int SHELF_WIDTH = 44;
     private static final String SHELF_LINE = "-".repeat(SHELF_WIDTH);
     private static final int TYPING_DELAY_MS = 50;
@@ -11,14 +11,14 @@ public class UserMenu {
     private Bookcase bookcase;
     private Scanner scanner;
 
-    public UserMenu() {
+    public BookcaseMain() {
         bookcase = new Bookcase();
         scanner = new Scanner(System.in);
     }
 
     public static void main(String[] args) {
-        UserMenu menu = new UserMenu();
-        menu.start();
+        BookcaseMain main = new BookcaseMain();
+        main.start();
     }
 
     public void start() {
@@ -28,16 +28,8 @@ public class UserMenu {
         while (running) {
             printBookcase();
             printMenu();
-            String choice = inputMenuChoice();
-
-            switch (choice) {
-                case "1" -> addBook();
-                case "2" -> findBook();
-                case "3" -> deleteBook();
-                case "4" -> clearBookcase();
-                case "5" -> running = false;
-                default -> System.out.println("Ошибка: неизвестная команда");
-            }
+            String choice = inputMenuItem();
+            running = executeCommand(choice);
 
             if (running) {
                 waitForEnter();
@@ -48,13 +40,27 @@ public class UserMenu {
         System.out.println("\nПрограмма завершена. До свидания!");
     }
 
+    private boolean executeCommand(String choice) {
+        switch (choice) {
+            case "1" -> addBook();
+            case "2" -> findBook();
+            case "3" -> deleteBook();
+            case "4" -> clearBookcase();
+            case "5" -> {
+                return false;
+            }
+            default -> System.out.println("Ошибка: неизвестная команда");
+        }
+        return true;
+    }
+
     private void printWelcome() {
         String welcome = """
-
-╔════════════════════════════════════════════╗
-║     ДОБРО ПОЖАЛОВАТЬ В КНИЖНЫЙ ШКАФ!       ║
-╚════════════════════════════════════════════╝
-""";
+                
+                ╔════════════════════════════════════════════╗
+                ║     ДОБРО ПОЖАЛОВАТЬ В КНИЖНЫЙ ШКАФ!       ║
+                ╚════════════════════════════════════════════╝
+                """;
 
         typewriterEffect(welcome);
         waitForEnter();
@@ -75,7 +81,7 @@ public class UserMenu {
     private void printBookcase() {
         System.out.println("\n" + "=".repeat(SHELF_WIDTH + 2));
         System.out.println("В шкафу книг - " + bookcase.getSize() +
-                ", свободно полок - " + bookcase.getFreeSlots());
+                ", свободно полок - " + bookcase.getFreeShelves());
         System.out.println("=".repeat(SHELF_WIDTH + 2));
 
         if (bookcase.getSize() == 0) {
@@ -100,17 +106,17 @@ public class UserMenu {
 
     private void printMenu() {
         System.out.println("""
-
-МЕНЮ:
-1. Добавить книгу
-2. Найти книгу
-3. Удалить книгу
-4. Очистить шкаф
-5. Завершить
-""");
+                
+                МЕНЮ:
+                1. Добавить книгу
+                2. Найти книгу
+                3. Удалить книгу
+                4. Очистить шкаф
+                5. Завершить
+                """);
     }
 
-    private String inputMenuChoice() {
+    private String inputMenuItem() {
         while (true) {
             System.out.print("Выберите пункт меню: ");
             String input = scanner.nextLine().trim();

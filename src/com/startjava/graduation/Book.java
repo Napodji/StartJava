@@ -7,9 +7,9 @@ public class Book {
 
     private String author;
     private String title;
-    private Year year;
+    private Year publicationYear;
 
-    public Book(String author, String title, Year year) {
+    public Book(String author, String title, Year publicationYear) {
         if (author == null || author.isBlank()) {
             throw new IllegalArgumentException("Автор не может быть пустым");
         }
@@ -18,34 +18,26 @@ public class Book {
             throw new IllegalArgumentException("Название не может быть пустым");
         }
 
-        if (year == null) {
+        if (publicationYear == null) {
             throw new IllegalArgumentException("Год издания не может быть пустым");
         }
 
-        if (year.getValue() < MIN_YEAR || year.isAfter(Year.now())) {
+        if (publicationYear.isBefore(Year.of(MIN_YEAR)) || publicationYear.isAfter(Year.now())) {
             throw new IllegalArgumentException(
                     "Год издания должен быть между " + MIN_YEAR + " и " + Year.now());
         }
 
         this.author = author;
         this.title = title;
-        this.year = year;
-    }
-
-    public String getAuthor() {
-        return author;
+        this.publicationYear = publicationYear;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public Year getYear() {
-        return year;
-    }
-
     @Override
     public String toString() {
-        return author + ", " + title + ", " + year;
+        return author + ", " + title + ", " + publicationYear;
     }
 }
