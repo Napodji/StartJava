@@ -21,7 +21,7 @@ public class BookcaseMain {
         main.start();
     }
 
-    public void start() {
+    private void start() {
         printWelcome();
         boolean running = true;
 
@@ -32,7 +32,7 @@ public class BookcaseMain {
             running = executeCommand(choice);
 
             if (running) {
-                waitForEnter();
+                waitEnter();
             }
         }
 
@@ -52,87 +52,6 @@ public class BookcaseMain {
             default -> System.out.println("Ошибка: неизвестная команда");
         }
         return true;
-    }
-
-    private void printWelcome() {
-        String welcome = """
-                
-                ╔════════════════════════════════════════════╗
-                ║     ДОБРО ПОЖАЛОВАТЬ В КНИЖНЫЙ ШКАФ!       ║
-                ╚════════════════════════════════════════════╝
-                """;
-
-        typewriterEffect(welcome);
-        waitForEnter();
-    }
-
-    private void typewriterEffect(String text) {
-        for (char c : text.toCharArray()) {
-            System.out.print(c);
-            try {
-                Thread.sleep(TYPING_DELAY_MS);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                break;
-            }
-        }
-    }
-
-    private void printBookcase() {
-        System.out.println("\n" + "=".repeat(SHELF_WIDTH + 2));
-        System.out.println("В шкафу книг - " + bookcase.getSize() +
-                ", свободно полок - " + bookcase.getFreeShelves());
-        System.out.println("=".repeat(SHELF_WIDTH + 2));
-
-        if (bookcase.getSize() == 0) {
-            System.out.println("\nШкаф пуст. Вы можете добавить в него первую книгу");
-            return;
-        }
-
-        Book[] books = bookcase.getBooks();
-        for (Book book : books) {
-            System.out.println("|" + formatBookForShelf(book) + "|");
-            System.out.println("|" + SHELF_LINE + "|");
-        }
-    }
-
-    private String formatBookForShelf(Book book) {
-        String bookStr = book.toString();
-        if (bookStr.length() > SHELF_WIDTH) {
-            return bookStr.substring(0, SHELF_WIDTH);
-        }
-        return bookStr + " ".repeat(SHELF_WIDTH - bookStr.length());
-    }
-
-    private void printMenu() {
-        System.out.println("""
-                
-                МЕНЮ:
-                1. Добавить книгу
-                2. Найти книгу
-                3. Удалить книгу
-                4. Очистить шкаф
-                5. Завершить
-                """);
-    }
-
-    private String inputMenuItem() {
-        while (true) {
-            System.out.print("Выберите пункт меню: ");
-            String input = scanner.nextLine().trim();
-
-            if (input.matches("[1-5]")) {
-                return input;
-            }
-
-            try {
-                Integer.parseInt(input);
-                System.out.println("Ошибка: Неверное значение меню (" + input +
-                        "). Допустимые значения: 1-5");
-            } catch (NumberFormatException e) {
-                System.out.println("Ошибка: значение должно быть целым числом");
-            }
-        }
     }
 
     private void addBook() {
@@ -155,24 +74,6 @@ public class BookcaseMain {
             }
         } catch (IllegalArgumentException e) {
             System.out.println("\n✗ " + e.getMessage());
-        }
-    }
-
-    private Year inputYear() {
-        while (true) {
-            System.out.print("Введите год издания: ");
-            String input = scanner.nextLine().trim();
-
-            try {
-                int yearValue = Integer.parseInt(input);
-                return Year.of(yearValue);
-            } catch (NumberFormatException e) {
-                System.out.println("Ошибка: год должен быть целым числом");
-                System.out.println("Попробуйте еще раз:");
-            } catch (Exception e) {
-                System.out.println("Ошибка: некорректный год");
-                System.out.println("Попробуйте еще раз:");
-            }
         }
     }
 
@@ -219,8 +120,113 @@ public class BookcaseMain {
         }
     }
 
-    private void waitForEnter() {
+    private void printWelcome() {
+        String welcome = """
+                
+                ╔════════════════════════════════════════════╗
+                ║     ДОБРО ПОЖАЛОВАТЬ В КНИЖНЫЙ ШКАФ!       ║
+                ╚════════════════════════════════════════════╝
+                """;
+
+        typewriterEffect(welcome);
+        waitEnter();
+    }
+
+    private void printBookcase() {
+        System.out.println("\n" + "=".repeat(SHELF_WIDTH + 2));
+        System.out.println("В шкафу книг - " + bookcase.getSize() +
+                ", свободно полок - " + bookcase.getFreeShelves());
+        System.out.println("=".repeat(SHELF_WIDTH + 2));
+
+        if (bookcase.getSize() == 0) {
+            System.out.println("\nШкаф пуст. Вы можете добавить в него первую книгу");
+            return;
+        }
+
+        Book[] books = bookcase.getBooks();
+        for (Book book : books) {
+            System.out.println("|" + formatBookForShelf(book) + "|");
+            System.out.println("|" + SHELF_LINE + "|");
+        }
+    }
+
+    private void printMenu() {
+        System.out.println("""
+                
+                МЕНЮ:
+                1. Добавить книгу
+                2. Найти книгу
+                3. Удалить книгу
+                4. Очистить шкаф
+                5. Завершить
+                """);
+    }
+
+    private String inputMenuItem() {
+        while (true) {
+            System.out.print("Выберите пункт меню: ");
+            String input = scanner.nextLine().trim();
+
+            if (input.matches("[1-5]")) {
+                return input;
+            }
+
+            try {
+                Integer.parseInt(input);
+                System.out.println("Ошибка: Неверное значение меню (" + input +
+                        "). Допустимые значения: 1-5");
+            } catch (NumberFormatException e) {
+                System.out.println("Ошибка: значение должно быть целым числом");
+            }
+        }
+    }
+
+    private Year inputYear() {
+        while (true) {
+            System.out.print("Введите год издания: ");
+            String input = scanner.nextLine().trim();
+
+            try {
+                return Year.of(Integer.parseInt(input));
+            } catch (NumberFormatException e) {
+                System.out.println("Ошибка: год должен быть целым числом");
+                System.out.println("Попробуйте еще раз:");
+            } catch (Exception e) {
+                System.out.println("Ошибка: некорректный год");
+                System.out.println("Попробуйте еще раз:");
+            }
+        }
+    }
+
+    private String formatBookForShelf(Book book) {
+        String bookStr = book.toString();
+        if (bookStr.length() > SHELF_WIDTH) {
+            return bookStr.substring(0, SHELF_WIDTH);
+        }
+        return bookStr + " ".repeat(SHELF_WIDTH - bookStr.length());
+    }
+
+    private void typewriterEffect(String text) {
+        for (char c : text.toCharArray()) {
+            System.out.print(c);
+            try {
+                Thread.sleep(TYPING_DELAY_MS);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+        }
+    }
+
+    private void waitEnter() {
         System.out.println("\nДля продолжения работы нажмите клавишу <Enter>");
-        scanner.nextLine();
+        while (true) {
+            String input = scanner.nextLine();
+            if (input.isEmpty()) {
+                break;
+            }
+            System.out.println("Ошибка: нажмите только <Enter>");
+        }
     }
 }
+

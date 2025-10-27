@@ -18,7 +18,7 @@ public class Bookcase {
             return false;
         }
 
-        if (size == CAPACITY) {
+        if (size >= CAPACITY) {
             System.out.println("Ошибка: шкаф заполнен");
             return false;
         }

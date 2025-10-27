@@ -7,7 +7,7 @@ public class Book {
 
     private String author;
     private String title;
-    private Year publicationYear;
+    private Year publishedYear;
 
     public Book(String author, String title, Year publicationYear) {
         if (author == null || author.isBlank()) {
@@ -29,7 +29,7 @@ public class Book {
 
         this.author = author;
         this.title = title;
-        this.publicationYear = publicationYear;
+        this.publishedYear = publicationYear;
     }
 
     public String getTitle() {
@@ -38,6 +38,6 @@ public class Book {
 
     @Override
     public String toString() {
-        return author + ", " + title + ", " + publicationYear;
+        return author + ", " + title + ", " + publishedYear;
     }
 }
